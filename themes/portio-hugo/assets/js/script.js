@@ -136,46 +136,46 @@ $(document).ready(function () {
   );
 
   // Testimonial slider
-  $(".testimonial__slider").slick({
-    infinite: true,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    dots: true,
-    arrows: false,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    responsive: [
-      {
-        breakpoint: 992,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true,
-        },
-      },
-    ],
-  });
+ // $(".testimonial__slider").slick({
+  //  infinite: true,
+ //   slidesToShow: 2,
+ //   slidesToScroll: 1,
+ //   dots: true,
+ //   arrows: false,
+ //   autoplay: true,
+ //   autoplaySpeed: 2000,
+ //   responsive: [
+ //     {
+  //      breakpoint: 992,
+  //      settings: {
+  //        slidesToShow: 1,
+ //         slidesToScroll: 1,
+  //        infinite: true,
+ //         dots: true,
+//        },
+//      },
+//    ],
+//  });
 
   // Modal Popup
-  $(".popup-button").magnificPopup({
-    type: "iframe",
-    iframe: {
-      patterns: {
-        youtube: {
-          index: "youtube.com/",
-          id: "v=",
-          src: "//www.youtube.com/embed/tgbNymZ7vqY",
-        },
-      },
-    },
-  });
+ // $(".popup-button").magnificPopup({
+//    type: "iframe",
+ //   iframe: {
+ //     patterns: {
+  //      youtube: {
+  //        index: "youtube.com/",
+ //         id: "v=",
+ ///         src: "//www.youtube.com/embed/tgbNymZ7vqY",
+ //       },
+  //    },
+ //   },
+ // });
 
-  $(".portfolio-item-grid").masonry({
+ // $(".portfolio-item-grid").masonry({
     // options
-    itemSelector: ".portfolio-item",
+//    itemSelector: ".portfolio-item",
     // columnWidth: 200,
-  });
+ // });
 
   //   blob animation
 
