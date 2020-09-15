@@ -27,11 +27,11 @@ title = "Portio"
   [[menu.main]]
     name = "Projects"
     url = "#blog"
-    weight = 6
+    weight = 3
   [[menu.main]]
     name = "Contact"
     url = "#contact"
-    weight = 7
+    weight = 4
 
   # Sitemap Menu
   [[menu.sitemap]]
@@ -48,7 +48,7 @@ title = "Portio"
 #    weight = 3
   [[menu.sitemap]]
     name = "Latest Article"
-    url = "#portfolio"
+    url = "#blog"
     weight = 4
     
 [params]
