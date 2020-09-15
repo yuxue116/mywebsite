@@ -6,48 +6,40 @@
     <description>Recent content in Recents Article on Portio</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 15 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 15 Sep 2020 13:06:26 +0600</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>draw</title>
-      <link>/blog/challenge_2/</link>
-      <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
+      <title>Climate change and temperature anomalies</title>
+      <link>/blog/climte-change/</link>
+      <pubDate>Tue, 15 Sep 2020 13:06:26 +0600</pubDate>
       
-      <guid>/blog/challenge_2/</guid>
-      <description>Challenge 2: Excess rentals in TfL bike sharingRecall the TfL data on how many bikes were hired every single day. We can get the latest data by running the following
-url &amp;lt;- &amp;quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&amp;quot;# Download TFL data to temporary filehttr::GET(url, write_disk(bike.temp &amp;lt;- tempfile(fileext = &amp;quot;.xlsx&amp;quot;)))## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2020-08-26T09%3A19%3A21/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20200915%2Feu-west-1%2Fs3%2Faws4_request&amp;amp;X-Amz-Date=20200915T203525Z&amp;amp;X-Amz-Expires=300&amp;amp;X-Amz-Signature=c2a79f862fa3aab812799d2f0da1c593471258bea16d0a8af41de8d5932099fb&amp;amp;X-Amz-SignedHeaders=host]## Date: 2020-09-15 20:35## Status: 200## Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet## Size: 164 kB## &amp;lt;ON DISK&amp;gt; C:\Users\yuxue\AppData\Local\Temp\RtmpiWz6Jd\filefcc557178b.xlsx# Use read_excel to read it as dataframebike0 &amp;lt;- read_excel(bike.</description>
+      <guid>/blog/climte-change/</guid>
+      <description>First we download the data from data.giss.nasa.gov website.
+weather &amp;lt;- read_csv(&amp;quot;https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.csv&amp;quot;, skip = 1, na = &amp;quot;***&amp;quot;)tidyweather &amp;lt;- weather %&amp;gt;% select(Year,Jan,Feb,Mar,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec) %&amp;gt;% gather(&amp;quot;month&amp;quot;,&amp;quot;delta&amp;quot;,2:12)Plotting InformationLet us plot the data using a time-series scatter plot, and add a trendline.
+tidyweather &amp;lt;- tidyweather %&amp;gt;%mutate(date = ymd(paste(as.character(Year), month, &amp;quot;1&amp;quot;)),month = month(date, label=TRUE),year = year(date))ggplot(tidyweather, aes(x=date, y = delta))+geom_point()+geom_smooth(color=&amp;quot;red&amp;quot;) +theme_bw() +labs (title = &amp;quot;Weather Anomalies&amp;quot;)Is the effect of increasing temperature more pronounced in some months?</description>
     </item>
     
     <item>
-      <title>Designer Conference at Florida 2020</title>
-      <link>/blog/designer-conference-at-florida-2020/</link>
-      <pubDate>Mon, 13 Jul 2020 13:06:26 +0600</pubDate>
+      <title>Omega Group plc- Pay Discrimination</title>
+      <link>/blog/omega-gender/</link>
+      <pubDate>Tue, 15 Sep 2020 13:06:26 +0600</pubDate>
       
-      <guid>/blog/designer-conference-at-florida-2020/</guid>
-      <description>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</description>
+      <guid>/blog/omega-gender/</guid>
+      <description>Omega Group plc- Pay DiscriminationAt the last board meeting of Omega Group Plc., the headquarters of a large multinational company, the issue was raised that women were being discriminated in the company, in the sense that the salaries were not the same for male and female executives. A quick analysis of a sample of 50 employees (of which 24 men and 26 women) revealed that the average salary for men was about 8,700 higher than for women.</description>
     </item>
     
     <item>
-      <title>Benjamin Franklins thoughts about new designers</title>
-      <link>/blog/benjamin-franklins-thoughts-about-new-designers/</link>
-      <pubDate>Mon, 13 Jul 2020 12:49:27 +0600</pubDate>
+      <title>Trump&#39;s Approval Margins</title>
+      <link>/blog/trump-approval/</link>
+      <pubDate>Tue, 15 Sep 2020 13:06:26 +0600</pubDate>
       
-      <guid>/blog/benjamin-franklins-thoughts-about-new-designers/</guid>
-      <description>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</description>
-    </item>
-    
-    <item>
-      <title>Hello R Markdown</title>
-      <link>/blog/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      
-      <guid>/blog/2015-07-23-r-rmarkdown/</guid>
-      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.</description>
+      <guid>/blog/trump-approval/</guid>
+      <description>fivethirtyeight.com has detailed data on all polls that track the president’s approval
+Trump’s Average Net Approval RateWe calculated the average net approval rate for each week that Trump has been in office.
+#Keeping only voters as the subgroup approval_polllist_dates &amp;lt;-approval_polllist_dates %&amp;gt;% filter(subgroup == &amp;quot;Voters&amp;quot;)#Adding net rate to the data set &amp;quot;approval_polllist_dates&amp;quot;approval_polllist_dates &amp;lt;- approval_polllist_dates %&amp;gt;% mutate(net_rate = (approve-disapprove)/(approve+disapprove)*100) %&amp;gt;%filter(!is.na(net_rate))#Calculating average net rate on a weekly basisWeekly_rating &amp;lt;- approval_polllist_dates %&amp;gt;% group_by(year,week_count) %&amp;gt;% summarise(average_weekly_netrate = mean(net_rate),SD = sd(net_rate), SE = SD/sqrt(length(net_rate)), DF = length(net_rate)-1) %&amp;gt;%filter(!</description>
     </item>
     
   </channel>

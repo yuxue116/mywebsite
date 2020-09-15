@@ -3,67 +3,40 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/blog/challenge_2/</loc>
-    <lastmod>2020-09-15T00:00:00+00:00</lastmod>
+    <loc>/blog/climte-change/</loc>
+    <lastmod>2020-09-15T13:06:26+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/omega-gender/</loc>
+    <lastmod>2020-09-15T13:06:26+06:00</lastmod>
   </url>
   
   <url>
     <loc>/</loc>
-    <lastmod>2020-09-15T00:00:00+00:00</lastmod>
+    <lastmod>2020-09-15T13:06:26+06:00</lastmod>
   </url>
   
   <url>
     <loc>/blog/</loc>
-    <lastmod>2020-09-15T00:00:00+00:00</lastmod>
+    <lastmod>2020-09-15T13:06:26+06:00</lastmod>
   </url>
   
   <url>
-    <loc>/blog/designer-conference-at-florida-2020/</loc>
-    <lastmod>2020-07-13T13:06:26+06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/benjamin-franklins-thoughts-about-new-designers/</loc>
-    <lastmod>2020-07-13T12:49:27+06:00</lastmod>
+    <loc>/blog/trump-approval/</loc>
+    <lastmod>2020-09-15T13:06:26+06:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/2015-07-23-r-rmarkdown/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/plot/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/r/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/r-markdown/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/regression/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
   </url>
   
   <url>
     <loc>/contact/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
   </url>
   
 </urlset>

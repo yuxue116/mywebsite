@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8" />
+  <title>Climate change and temperature anomalies</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+  <!-- Slick Carousel --> 
+  <link rel="stylesheet" href="/plugins/slick/slick.css" />
+  <link rel="stylesheet" href="/plugins/slick/slick-theme.css" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.min.css" />
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/plugins/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/plugins/magnafic-popup/magnific-popup.css" />
+
+  <!-- Stylesheets -->
+  
+  <link href="/scss/style.min.css" rel="stylesheet" />
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
+  
+</head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+      <a href="/" class="navbar-brand">
+          <img src="/images/site-navigation/logo1.png" alt="site-logo">
+      </a>
+      <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+          <ul class="nav navbar-nav main-navigation">
+              
+              
+                <li class="nav-item">
+                  <a href="/#home" class="nav-link ">Home</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a href="/#resume" class="nav-link ">Experience</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a href="/#blog" class="nav-link ">Projects</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a href="/#contact" class="nav-link ">Contact</a>
+                </li>
+              
+          </ul>
+          <div class="navbar-nav">
+              <a href="/contact" class="hire_button">Hire Me Now</a>
+          </div>
+      </div>
+  </div>
+</nav>
+    <div id="content">
+      
+
+<header class="breadCrumb">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-md-12 offset-lg-1 offset-md-0 text-center">
+        <h3 class="breadCrumb__title">Climate change and temperature anomalies</h3>
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center">
+          <ol class="breadcrumb align-items-center">
+            <li class="breadcrumb-item"><a href=/>Home</a></li>
+            <li class="breadcrumb-item"><a href=/blog>All Post</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Climate change and temperature anomalies</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section singleBlog">
+  <div class="svg-img">
+      <img src=/images/hero/figure-svg.svg alt="">
+  </div>
+  <div class="animate-shape">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 600 600">
+          <defs>
+              <linearGradient id="d" x1="0.929" y1="0.111" x2="0.263" y2="0.935" gradientUnits="objectBoundingBox">
+                  <stop offset="0" stop-color="#f1f6f9" />
+                  <stop offset="1" stop-color="#f1f6f9" stop-opacity="0" />
+              </linearGradient>
+          </defs>
+          <g data-name="blob-shape (3)">
+              <path class="blob" fill="url(#d)"
+                  d="M455.4 151.1c43.1 36.7 73.4 92.8 60.8 136.3-12.7 43.5-68.1 74.4-111.3 119.4-43.1 45-74 104.1-109.8 109-35.9 5-76.7-44.2-111.8-89.2-35.2-45-64.7-85.8-70.8-132.6-6-46.8 11.6-99.6 46.7-136.3 35.2-36.6 88-57.2 142.4-58.8 54.5-1.7 110.6 15.6 153.8 52.2z" />
+          </g>
+      </svg>
+  </div>
+  <div class="animate-pattern">
+      <img src=/images/service/background-pattern.svg alt="background-shape">
+  </div>
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="singleBlog__feature">
+                  <img src=/images/single-blog/feature-image.png alt="feature-image">
+              </div>
+          </div>
+      </div>
+      <div class="row mt-5">
+          <div class="col-lg-12">
+              <div class="singleBlog__content">
+                  
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>First we download the data from data.giss.nasa.gov website.</p>
+<pre class="r"><code>weather &lt;- 
+  read_csv(&quot;https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.csv&quot;, 
+           skip = 1, 
+           na = &quot;***&quot;)</code></pre>
+<pre class="r"><code>tidyweather &lt;- weather %&gt;% select(Year,Jan,Feb,Mar,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec) %&gt;% 
+  gather(&quot;month&quot;,&quot;delta&quot;,2:12)</code></pre>
+<div id="plotting-information" class="section level2">
+<h2>Plotting Information</h2>
+<p>Let us plot the data using a time-series scatter plot, and add a trendline.</p>
+<pre class="r"><code>tidyweather &lt;- tidyweather %&gt;%
+  mutate(date = ymd(paste(as.character(Year), month, &quot;1&quot;)),
+         month = month(date, label=TRUE),
+         year = year(date))
+
+ggplot(tidyweather, aes(x=date, y = delta))+
+  geom_point()+
+  geom_smooth(color=&quot;red&quot;) +
+  theme_bw() +
+  labs (
+    title = &quot;Weather Anomalies&quot;
+  )</code></pre>
+<p><img src="/blog/climte-change_files/figure-html/scatter_plot-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>Is the effect of increasing temperature more pronounced in some months?</p>
+<pre class="r"><code>#Your code goes here...
+ggplot(tidyweather, aes(x=date, y = delta))+
+  geom_point()+
+  geom_smooth(color=&quot;red&quot;) +
+  theme_bw() +
+  labs (
+    title = &quot;Weather Anomalies&quot;
+  ) + facet_wrap(~month)</code></pre>
+<p><img src="/blog/climte-change_files/figure-html/facet_wrap-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>It is sometimes useful to group data into different time periods to study historical data. For example, we often refer to decades such as 1970s, 1980s, 1990s etc. to refer to a period of time. NASA calcuialtes a temperature anomaly, as difference form the base periof of 1951-1980. The code below creates a new data frame called <code>comparison</code> that groups data in five time periods: 1881-1920, 1921-1950, 1951-1980, 1981-2010 and 2011-present.</p>
+<pre class="r"><code>comparison &lt;- tidyweather %&gt;% 
+  filter(Year&gt;= 1881) %&gt;%     #remove years prior to 1881
+  #create new variable &#39;interval&#39;, and assign values based on criteria below:
+  mutate(interval = case_when(
+    Year %in% c(1881:1920) ~ &quot;1881-1920&quot;,
+    Year %in% c(1921:1950) ~ &quot;1921-1950&quot;,
+    Year %in% c(1951:1980) ~ &quot;1951-1980&quot;,
+    Year %in% c(1981:2010) ~ &quot;1981-2010&quot;,
+    TRUE ~ &quot;2011-present&quot;
+  ))</code></pre>
+<p>Now that we have the <code>interval</code> variable, we can create a density plot to study the distribution of monthly deviations (<code>delta</code>), grouped by the different time periods we are interested in.</p>
+<pre class="r"><code>ggplot(comparison, aes(x=delta, fill=interval))+
+  geom_density(alpha=0.2) +   #density plot with tranparency set to 20%
+  theme_bw() +                #theme
+  labs (
+    title = &quot;Density Plot for Monthly Temperature Anomalies&quot;,
+    y     = &quot;Density&quot;         #changing y-axis label to sentence case
+  )</code></pre>
+<p><img src="/blog/climte-change_files/figure-html/density_plot-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>So far, we have been working with monthly anomalies. However, we might be interested in average annual anomalies.</p>
+<pre class="r"><code>#creating yearly averages
+average_annual_anomaly &lt;- tidyweather %&gt;% 
+  group_by(Year) %&gt;%   #grouping data by Year
+  
+  # creating summaries for mean delta 
+  # use `na.rm=TRUE` to eliminate NA (not available) values 
+  summarise(annual_average_delta = mean(delta, na.rm=TRUE)) 
+
+#plotting the data:
+ggplot(average_annual_anomaly, aes(x=Year, y=annual_average_delta))+
+  geom_point()+
+  
+  #Fit the best fit line, using LOESS method
+  geom_smooth() +
+  
+  #change to theme_bw() to have white background + black frame around plot
+  theme_bw() +
+  labs (
+    title = &quot;Average Yearly Anomaly&quot;,
+    y     = &quot;Average Annual Delta&quot;
+  )                         </code></pre>
+<p><img src="/blog/climte-change_files/figure-html/averaging-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
+<div id="confidence-interval-for-delta" class="section level2">
+<h2>Confidence Interval for delta</h2>
+<p>A one-degree global change is significant because it takes a vast amount of heat to warm all the oceans, atmosphere, and land by that much. In the past, a one- to two-degree drop was all it took to plunge the Earth into the Little Ice Age.</p>
+<p>We have constructed a confidence interval for the average annual delta since 2011, both using a formula and using a bootstrap simulation with the <code>infer</code> package.</p>
+<pre class="r"><code>library(&quot;infer&quot;)
+
+formula_ci &lt;- comparison %&gt;% 
+
+  # choose the interval 2011-present
+  # what dplyr verb will you use? 
+  filter(interval==&quot;2011-present&quot;) %&gt;% 
+
+  # calculate summary statistics for temperature deviation (delta)
+  # snippet taken from: https://stackoverflow.com/questions/35953394/calculating-length-of-95-ci-using-dplyr
+  summarise(mean = mean(delta, na.rm = TRUE),
+            sd = sd(delta, na.rm = TRUE),
+            count = n()) %&gt;%
+  mutate(se = sd / sqrt(count),
+         lower_ci = mean - qt(1 - (0.05 / 2), count - 1) * se,
+         upper_ci = mean + qt(1 - (0.05 / 2), count - 1) * se)
+  
+  # calculate mean, SD, count, SE, lower/upper 95% CI
+  # what dplyr verb will you use? 
+
+#print out formula_CI
+formula_ci</code></pre>
+<pre><code>## # A tibble: 1 x 6
+##    mean    sd count     se lower_ci upper_ci
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 0.961 0.267    99 0.0268    0.908     1.01</code></pre>
+<pre class="r"><code># use the infer package to construct a 95% CI for delta
+formula_ci_infer &lt;- comparison %&gt;% 
+
+  # choose the interval 2011-present
+  # what dplyr verb will you use? 
+  filter(interval==&quot;2011-present&quot;) %&gt;% 
+
+  # calculate summary statistics for temperature deviation (delta)
+  group_by(Year) %&gt;% 
+  specify(response=delta) %&gt;% 
+  generate(reps=100,type=&quot;bootstrap&quot;) %&gt;% 
+  calculate(stat=&quot;mean&quot;)
+
+#print out formula_CI
+formula_ci_infer %&gt;%  get_confidence_interval(level = 0.95,type=&quot;percentile&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##   lower_ci upper_ci
+##      &lt;dbl&gt;    &lt;dbl&gt;
+## 1    0.905     1.02</code></pre>
+<p>The 95% Confidence Interval values for the average annual temperature delta between years 2011-present is between 0.91C to 1.02C as compared to the base year. This is a worrying result as it represents a significant increase since 2011. Which as mentioned, could lead to major climate changes.</p>
+</div>
+
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+
+    </div>
+    <section class="contact" id="contact">
+  <div class="contact__background_shape">
+      <svg viewBox="0 0 1920 79">
+          <path d="M0 0h1920v79L0 0z" data-name="Path 1450" />
+      </svg>
+  </div>
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="contact__cta">
+                  <div class="shape-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="357" height="315.029" viewBox="0 0 357 315.029">
+                          <path data-name="Path 1449" d="M76.1-157.222C91.746-135.8 87.2-94.273 99.993-61.945c12.7 32.328 42.661 55.459 39.248 73.282-3.318 17.823-40.007 30.337-65.6 43.325-25.5 12.988-39.912 26.545-60.01 42.566-20.1 16.116-46.074 34.6-63.328 27.682-17.349-6.921-25.976-39.153-59.915-59.82s-93.1-29.768-105.325-51.478 22.373-56.028 43.609-93.949c21.331-37.921 29.2-79.35 53.563-96.793 24.459-17.444 65.414-10.9 103.9-6.921 38.396 3.982 74.326 5.404 89.965 26.829z" transform="translate(217.489 188.626)"/>
+                      </svg>
+                  </div>
+                  <div class="shape-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="357" height="315.029" viewBox="0 0 357 315.029">
+                          <path data-name="Path 1449" d="M76.1-157.222C91.746-135.8 87.2-94.273 99.993-61.945c12.7 32.328 42.661 55.459 39.248 73.282-3.318 17.823-40.007 30.337-65.6 43.325-25.5 12.988-39.912 26.545-60.01 42.566-20.1 16.116-46.074 34.6-63.328 27.682-17.349-6.921-25.976-39.153-59.915-59.82s-93.1-29.768-105.325-51.478 22.373-56.028 43.609-93.949c21.331-37.921 29.2-79.35 53.563-96.793 24.459-17.444 65.414-10.9 103.9-6.921 38.396 3.982 74.326 5.404 89.965 26.829z" transform="translate(217.489 188.626)"/>
+                      </svg>
+                  </div>
+                  <div class="contact__cta_content">
+                      <span>Contact me</span>
+                      <h1>Let’s Start a Project</h1>
+                  </div>
+                  <div class="contact__cta_action">
+                      <a href="/contact">Get in touch</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="row contact__widget">
+          <div class="col-lg-4">
+              <div class="contact__widget_logo">
+                  <img src="/images/site-navigation/logo1.png" alt="widget-logo">
+              </div>
+          </div>
+          <div class="col-lg-4">
+              <div class="contact__widget_sitemap">
+                  <h3>Sitemap</h3>
+                  <ul>
+                      
+                      
+                        <li><a href="/about">About me</a></li>
+                      
+                        <li><a href="/">Latest Article</a></li>
+                      
+                  </ul>
+              </div>
+          </div>
+          <div class="col-lg-4">
+              <div class="contact__widget_address">
+                  <h3>Address</h3>
+                  
+                  <ul>
+                      <li><a href="tel:&#43;%2844%29%207579951305"><i class="fa fa-phone"></i>&#43;(44) 7579951305</a></li> 
+                      <li><a href="mailto:ysang.mam2021@london.edu"><i class="fa fa-envelope"></i>ysang.mam2021@london.edu</a></li>
+                      <li><p><i class="fa fa-map-marker"></i>London Business School, Regent&#39;s Park, London</p></li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <div class="row contact__footer">
+          <div class="col-lg-6">
+              <div class="contact__footer_copy">
+                  <p>All right reserved copyright © Portio 2020</p>
+              </div>
+          </div>
+          <div class="col-lg-6">
+              <div class="contact__footer_social">
+                  <ul>
+                      <li><a href=""><i class="fa fa-facebook-official"></i></a></li>
+                      <li><a href=""><i class="fa fa-linkedin-square"></i></a></li>
+                      <li><a href=""><i class="fa fa-pinterest-square"></i></a></li>
+                      <li><a href=""><i class="fa fa-twitter"></i></a></li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR%20GOOGLE%20MAP%20API&libraries=geometry"></script>
+<script src="/plugins/jQuery/jquery.min.js"></script>
+<script src="/plugins/bootstrap/bootstrap.min.js"></script>
+<script src="/plugins/slick/slick.min.js"></script>
+<script src="/plugins/slick/slick.min.js"></script>
+<script src="/plugins/waypoint/jquery.waypoints.min.js"></script>
+<script src="/plugins/magnafic-popup/jquery.magnific-popup.min.js"></script>
+<script src="/plugins/tweenmax/TweenMax.min.js"></script>
+<script src="/plugins/masonry/masonry.min.js"></script>
+
+<script src="/js/form-handler.min.js"></script>
+
+<script src="/js/script.min.js"></script>
+  </body>
+</html>

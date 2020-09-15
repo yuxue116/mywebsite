@@ -1,0 +1,70 @@
+---
+date: "2020-09-15T13:06:26+06:00"
+featureImage: images/allpost/blog2.png
+postImage: images/single-blog/feature-image.png
+title: Trump's Approval Margins
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>fivethirtyeight.com has detailed data on <a href="https://projects.fivethirtyeight.com/trump-approval-ratings">all polls that track the president’s approval</a></p>
+<div id="trumps-average-net-approval-rate" class="section level2">
+<h2>Trump’s Average Net Approval Rate</h2>
+<p>We calculated the average net approval rate for each week that Trump has been in office.</p>
+<pre class="r"><code>#Keeping only voters as the subgroup 
+approval_polllist_dates &lt;-approval_polllist_dates %&gt;% filter(subgroup == &quot;Voters&quot;)
+
+#Adding net rate to the data set &quot;approval_polllist_dates&quot;
+approval_polllist_dates &lt;- approval_polllist_dates %&gt;% mutate(net_rate = (approve-disapprove)/(approve+disapprove)*100) %&gt;%
+  filter(!is.na(net_rate))
+
+#Calculating average net rate on a weekly basis
+Weekly_rating &lt;- approval_polllist_dates %&gt;% 
+  group_by(year,week_count) %&gt;% 
+  summarise(average_weekly_netrate = mean(net_rate),SD = sd(net_rate), SE = SD/sqrt(length(net_rate)), DF = length(net_rate)-1) %&gt;%
+  filter(!is.na(SD)) 
+  #filter(!is.na(SE)) %&gt;% 
+  #filter(!is.na(DF)) %&gt;%
+  #filter(!is.na(CI.upper)) %&gt;% 
+  #filter(!is.na(CI.lower)) 
+
+#Defining confidence intervals
+Weekly_rating &lt;- Weekly_rating %&gt;% mutate(CI.upper = average_weekly_netrate+qt(.975,DF)*SE, CI.lower = average_weekly_netrate-qt(.975,DF)*SE)
+
+#Plotting the data
+graph_colouring &lt;- c(&quot;#FF7733&quot; ,&quot;#81C813&quot;, &quot;#2BEEE7&quot;, &quot;#ED80FB&quot;)
+
+Weekly_rating %&gt;%
+  ggplot(aes(x=week_count, y=average_weekly_netrate, color = factor(year))) + 
+  geom_line() +  
+  facet_wrap(~year) + 
+  geom_hline(yintercept =0, color = &quot;orange&quot;) + 
+  scale_x_continuous (limits = c(0,52),breaks=c(0,13,26,39,52),labels = c(&quot;0&quot;, &quot;13&quot;,&quot;26&quot;,&quot;39&quot;,&quot;52&quot;))+ 
+  geom_point() +
+  scale_y_continuous (limits=c(-22,9),breaks=c(-20,-17.5,-15,-12.5,-10,-7.5,-5,-2.5,0,2.5,5,7.5)) +
+  geom_ribbon(aes(ymin = CI.lower, ymax = CI.upper, fill = year), alpha=.2) +
+  labs(y= &quot;Average Net Approval (%)&quot;, x = &quot;Week of the year&quot;) + 
+  ggtitle(label = &quot;Estimating Net Approval (approve - dissaprove) for Donald Trump&quot;, subtitle = &quot;Weekly average of all polls&quot;) +
+  theme(title = element_text(size=8),
+        #axis.text.y = element_blank(),
+        axis.title = element_text(size=8),
+        axis.text = element_text(size=8),
+        axis.ticks = element_blank(),
+        strip.text = element_text(size=8),
+        panel.background  = element_rect(color=&quot;black&quot;, fill = &quot;white&quot;),
+        panel.border = element_blank(),
+        strip.background = element_rect(color=&quot;black&quot;, fill=&quot;grey&quot;, size=.5),
+        panel.grid = element_line(color = &quot;#DCDCDC&quot;),
+        legend.position = &quot;none&quot;) +
+  scale_colour_manual(aesthetics = &quot;custom_color_palette&quot;)</code></pre>
+<p><img src="/blog/trump-approval_files/figure-html/unnamed-chunk-2-1.png" width="648" style="display: block; margin: auto;" /></p>
+</div>
+<div id="comparing-trumps-confidence-intervals" class="section level2">
+<h2>Comparing Trumps Confidence Intervals</h2>
+<p>What’s going on?</p>
+<p>The 95% confidence interval for week 15 (-7.59, -9.09) is relatively narrower than the interval for week 34 (-9.29, -13.16) implying tighter clustering of data near the mean, and lesser dispersion. This translates to a higher proportion of people maintaining their approval rating in week 15, compared to week 34 where the mean approval ratings went further down. One noticeable difference between the two weeks in reference is that the confidence intervals for the approval ratings don’t overlap, and with both the weeks having negative ratings, further downside movement with no overlap to the CI in week 15 doesn’t bode well as re-elections near.</p>
+<p>A cause of this variance could be the proximity of re-election date, with more promising candidates (Like Joe Biden) proposing election manifestos contrasting Trump’s policies on response to COVID, racial discrimination and unemployment.</p>
+<p>Source: (Burns, Martin and Haberman, 2020)</p>
+<p>Citation:Burns, A., Martin, J. and Haberman, M., 2020. In Final Stretch, Biden Defends Lead Against Trump’S Onslaught. [online] New York Times. Available at: <a href="https://www.nytimes.com/2020/09/06/us/politics/trump-biden-2020.html" class="uri">https://www.nytimes.com/2020/09/06/us/politics/trump-biden-2020.html</a> [Accessed 8 September 2020].</p>
+</div>

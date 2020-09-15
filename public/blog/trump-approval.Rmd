@@ -1,0 +1,122 @@
+---
+date: "2020-09-15T13:06:26+06:00"
+featureImage: images/allpost/blog2.png
+postImage: images/single-blog/feature-image.png
+title: Trump's Approval Margins
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+```
+
+fivethirtyeight.com has detailed data on [all polls that track the president's approval ](https://projects.fivethirtyeight.com/trump-approval-ratings)
+
+```{r, include=FALSE}
+# Import approval polls data
+#approval_polllist <- read_csv(here::here('data', 'approval_polllist.csv'))
+
+# or directly off fivethirtyeight website
+approval_polllist <- read_csv('https://projects.fivethirtyeight.com/trump-approval-data/approval_polllist.csv') 
+
+glimpse(approval_polllist)
+
+# Use `lubridate` to fix dates, as they are given as characters.
+approval_polllist_dates <- approval_polllist %>% 
+  mutate(enddate = mdy(enddate)) %>% 
+  mutate(week_count = week(enddate)) %>% 
+  mutate(year = year(enddate))
+approval_polllist_dates
+```
+
+## Trump's Average Net Approval Rate
+
+We calculated the average net approval rate for each week that Trump has been in office. 
+
+```{r, cache=TRUE}
+
+#Keeping only voters as the subgroup 
+approval_polllist_dates <-approval_polllist_dates %>% filter(subgroup == "Voters")
+
+#Adding net rate to the data set "approval_polllist_dates"
+approval_polllist_dates <- approval_polllist_dates %>% mutate(net_rate = (approve-disapprove)/(approve+disapprove)*100) %>%
+  filter(!is.na(net_rate))
+
+#Calculating average net rate on a weekly basis
+Weekly_rating <- approval_polllist_dates %>% 
+  group_by(year,week_count) %>% 
+  summarise(average_weekly_netrate = mean(net_rate),SD = sd(net_rate), SE = SD/sqrt(length(net_rate)), DF = length(net_rate)-1) %>%
+  filter(!is.na(SD)) 
+  #filter(!is.na(SE)) %>% 
+  #filter(!is.na(DF)) %>%
+  #filter(!is.na(CI.upper)) %>% 
+  #filter(!is.na(CI.lower)) 
+
+#Defining confidence intervals
+Weekly_rating <- Weekly_rating %>% mutate(CI.upper = average_weekly_netrate+qt(.975,DF)*SE, CI.lower = average_weekly_netrate-qt(.975,DF)*SE)
+
+#Plotting the data
+graph_colouring <- c("#FF7733" ,"#81C813", "#2BEEE7", "#ED80FB")
+
+Weekly_rating %>%
+  ggplot(aes(x=week_count, y=average_weekly_netrate, color = factor(year))) + 
+  geom_line() +  
+  facet_wrap(~year) + 
+  geom_hline(yintercept =0, color = "orange") + 
+  scale_x_continuous (limits = c(0,52),breaks=c(0,13,26,39,52),labels = c("0", "13","26","39","52"))+ 
+  geom_point() +
+  scale_y_continuous (limits=c(-22,9),breaks=c(-20,-17.5,-15,-12.5,-10,-7.5,-5,-2.5,0,2.5,5,7.5)) +
+  geom_ribbon(aes(ymin = CI.lower, ymax = CI.upper, fill = year), alpha=.2) +
+  labs(y= "Average Net Approval (%)", x = "Week of the year") + 
+  ggtitle(label = "Estimating Net Approval (approve - dissaprove) for Donald Trump", subtitle = "Weekly average of all polls") +
+  theme(title = element_text(size=8),
+        #axis.text.y = element_blank(),
+        axis.title = element_text(size=8),
+        axis.text = element_text(size=8),
+        axis.ticks = element_blank(),
+        strip.text = element_text(size=8),
+        panel.background  = element_rect(color="black", fill = "white"),
+        panel.border = element_blank(),
+        strip.background = element_rect(color="black", fill="grey", size=.5),
+        panel.grid = element_line(color = "#DCDCDC"),
+        legend.position = "none") +
+  scale_colour_manual(aesthetics = "custom_color_palette")
+```
+
+## Comparing Trumps Confidence Intervals
+
+What's going on? 
+
+The 95% confidence interval for week 15 (-7.59, -9.09) is relatively narrower than the interval for week 34 (-9.29, -13.16) implying tighter clustering of data near the mean, and lesser dispersion. This translates to a higher proportion of people maintaining their approval rating in week 15, compared to week 34 where the mean approval ratings went further down. One noticeable difference between the two weeks in reference is that the confidence intervals for the approval ratings don't overlap, and with both the weeks having negative ratings, further downside movement with no overlap to the CI in week 15 doesn't bode well as re-elections near. 
+
+A cause of this variance could be the proximity of re-election date, with more promising candidates (Like Joe Biden) proposing election manifestos contrasting Trump's policies on response to COVID, racial discrimination and unemployment.
+
+Source: (Burns, Martin and Haberman, 2020)
+
+Citation:Burns, A., Martin, J. and Haberman, M., 2020. In Final Stretch, Biden Defends Lead Against Trump’S Onslaught. [online] New York Times. Available at: <https://www.nytimes.com/2020/09/06/us/politics/trump-biden-2020.html> [Accessed 8 September 2020].
+
