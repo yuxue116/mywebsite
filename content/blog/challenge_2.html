@@ -1,0 +1,60 @@
+---
+title: "draw"
+featureImage: images/allpost/allPost-7.jpg
+date: '2020-09-15'
+postImage: images/single-blog/feature-image.jpg
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="challenge-2-excess-rentals-in-tfl-bike-sharing" class="section level1">
+<h1>Challenge 2: Excess rentals in TfL bike sharing</h1>
+<p>Recall the TfL data on how many bikes were hired every single day. We can get the latest data by running the following</p>
+<pre class="r"><code>url &lt;- &quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&quot;
+
+# Download TFL data to temporary file
+httr::GET(url, write_disk(bike.temp &lt;- tempfile(fileext = &quot;.xlsx&quot;)))</code></pre>
+<pre><code>## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2020-08-26T09%3A19%3A21/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20200915%2Feu-west-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20200915T203525Z&amp;X-Amz-Expires=300&amp;X-Amz-Signature=c2a79f862fa3aab812799d2f0da1c593471258bea16d0a8af41de8d5932099fb&amp;X-Amz-SignedHeaders=host]
+##   Date: 2020-09-15 20:35
+##   Status: 200
+##   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+##   Size: 164 kB
+## &lt;ON DISK&gt;  C:\Users\yuxue\AppData\Local\Temp\RtmpiWz6Jd\filefcc557178b.xlsx</code></pre>
+<pre class="r"><code># Use read_excel to read it as dataframe
+bike0 &lt;- read_excel(bike.temp,
+                   sheet = &quot;Data&quot;,
+                   range = cell_cols(&quot;A:B&quot;))
+
+# change dates to get year, month, and week
+bike &lt;- bike0 %&gt;% 
+  clean_names() %&gt;% 
+  rename (bikes_hired = number_of_bicycle_hires) %&gt;% 
+  mutate (year = year(day),
+          month = lubridate::month(day),
+          week = isoweek(day))</code></pre>
+<div id="reproduction-of-distribution-of-bikes-hired-per-month" class="section level2">
+<h2>Reproduction of distribution of bikes hired per month</h2>
+<p>We can easily create a facet grid that plots bikes hired by month and year.
+The example plot is shown as below.
+<img src="C:/Users/yuxue/Documents/tmp/mywebsite/images/tfl_distributions_monthly.png" style="display: block; margin: auto;" /></p>
+<p>The plot that we reproduced is shown as below.
+<img src="/blog/challenge_2_files/figure-html/tfl_month_year_grid-1.png" width="1920" style="display: block; margin: auto;" /></p>
+<p>When look at the density plots of May and Jun in 2020, we can easily notice that their peaks are lower than the peaks of the same month of the previous year, which implies that the bike rentals are less concentrated in these two month. People rent bicycles more frequently on some days and rent bicycles less often on certain days. The possible reason is that covid-19 has changed people’s lifestyles. Some people may rent bicycles more often to do some excercise and some people may be afraid of getting out of their bedrooms thus rent bicycles less often.</p>
+</div>
+<div id="reproduction-of-monthly-changes-in-tfl-bike-rentals" class="section level2">
+<h2>Reproduction of monthly changes in TfL bike rentals</h2>
+<p>The example plot is shown as below.</p>
+<p><img src="C:/Users/yuxue/Documents/tmp/mywebsite/images/tfl_monthly.png" style="display: block; margin: auto;" /></p>
+<p>Our reproduction plot is shown as below.</p>
+<p><img src="/blog/challenge_2_files/figure-html/tfl_absolute_monthly_change2-1.png" width="1920" style="display: block; margin: auto;" /></p>
+</div>
+<div id="reproduction-of-weekly-changes-in-tfl-bike-rentals" class="section level2">
+<h2>Reproduction of weekly changes in TfL bike rentals</h2>
+<p>The second one looks at percentage changes from the expected level of weekly rentals. The two grey shaded rectangles correspond to the second (weeks 14-26) and fourth (weeks 40-52) quarters.</p>
+<p><img src="C:/Users/yuxue/Documents/tmp/mywebsite/images/tfl_weekly.png" style="display: block; margin: auto;" />
+The plot that we replicated is shown as below.
+<img src="/blog/challenge_2_files/figure-html/tfl_percent_change-1.png" width="1920" style="display: block; margin: auto;" /></p>
+<p>When calculating the expected rentals, we should use the “mean” because “mean” reflect the average number of the data. But the “median” is just the “middle” value in the list of numbers.</p>
+</div>
+</div>

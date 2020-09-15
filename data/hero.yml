@@ -1,0 +1,10 @@
+---
+enable: true
+title: Hi, I am Yuxue
+subtitle: Striving to make impact in data world
+description:  Welcome to my personal site. I blog about the things I learn, mostly in R and Python, and you can find my latest work and experience below.
+buttonName: Contact me
+buttonURL: contact
+image: images/hero/SS1.jpg
+#videoThumb: images/hero/popup-thumb.png
+#videoURL: https://www.youtube.com/embed/tgbNymZ7vqY

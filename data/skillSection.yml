@@ -1,0 +1,13 @@
+---
+enable: true
+topTitle: My Skills
+title: Why hire me for your next project?
+subtitle: My goal is to work in the intersection of business and technology and make data-driven analysis to help companies improve their performances.
+
+skill:
+  - title: Technical Skills (SQL, R, Python)
+    percent: 90
+  - title: Logical and critical thinking 
+    percent: 80
+  - title: Communication skills and client-facing experiences
+    percent: 85

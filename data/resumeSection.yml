@@ -1,0 +1,27 @@
+---
+enable: true
+topTitle: My Resume
+title: My Expertises
+subtitle: Experienced data analyst with a solid science background and demonstrated working history in the technology industry.
+subsubtitle: Proficient in MySQL, R, Python, Tableau. Skilled in Machine learing. Passionate with turning data into business value.
+
+tab1Name: Education
+tab2Name: Experiences
+tab1Target: education
+tab2Target: experience
+
+education:
+  - title: Master in Analytics and Manageme, London Business School
+    content: MAM programe focus on the intersection of business, data and machine learning. Here, I studied many data related courses like Relevant Applied Statistics with R, Data Science for Business and Machine Learning for Big Data.
+    time: 2020-2022
+  - title: Bachelor of Engineering, Sun Yat-Sen University
+    content: This major laid me a solid engineering and technology background. Here, I have not only proficiently learned Maths, Physics and many computer languages (C, C++, Malab, Python), but also mastered another language - French. 
+    time: 2015-2019
+
+experience:
+  - title: Data analyst, Alibaba Group
+    content: 
+    time: 2020
+  - title: Associate, Huawei technology CO., LTD
+    content: 
+    time: 2019-2020
