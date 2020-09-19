@@ -6,10 +6,19 @@
     <description>Recent content in Recents Article on Portio</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 15 Sep 2020 13:06:26 +0600</lastBuildDate>
+    <lastBuildDate>Thu, 17 Sep 2020 13:06:26 +0600</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Analysis of AirBnB listings in Copenhagen</title>
+      <link>/blog/airbnb-copenhagen/</link>
+      <pubDate>Thu, 17 Sep 2020 13:06:26 +0600</pubDate>
+      
+      <guid>/blog/airbnb-copenhagen/</guid>
+      <description>Executive SummaryAirbnb is a community where guests can book living accommodations from a list of hosts. However, when an individual user books for a stay, it is hard to predict the quality and the price of a rental since there are no formal controls presented in the Airbnb. The aim of this work is to analyse data about Airbnb listings in Copenhagen and fit a model to predict the total cost for two people staying 4 nights in an Airbnb.</description>
+    </item>
     
     <item>
       <title>Climate change and temperature anomalies</title>

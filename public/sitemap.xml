@@ -3,22 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/blog/airbnb-copenhagen/</loc>
+    <lastmod>2020-09-17T13:06:26+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-09-17T13:06:26+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/</loc>
+    <lastmod>2020-09-17T13:06:26+06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/climte-change/</loc>
     <lastmod>2020-09-15T13:06:26+06:00</lastmod>
   </url>
   
   <url>
     <loc>/blog/omega-gender/</loc>
-    <lastmod>2020-09-15T13:06:26+06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/</loc>
-    <lastmod>2020-09-15T13:06:26+06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/</loc>
     <lastmod>2020-09-15T13:06:26+06:00</lastmod>
   </url>
   
