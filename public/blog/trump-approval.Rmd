@@ -1,6 +1,6 @@
 ---
 date: "2020-09-15T13:06:26+06:00"
-featureImage: images/allpost/blog2.png
+featureImage: images/allpost/blog4.jpg
 postImage: images/single-blog/feature-image.png
 title: Trump's Approval Margins
 ---

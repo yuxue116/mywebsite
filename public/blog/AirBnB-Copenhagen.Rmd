@@ -1,6 +1,6 @@
 ---
 date: "2020-09-17T08:38:26+06:00"
-featureImage: images/allpost/blog4.png
+featureImage: images/allpost/blog5.jpg
 postImage: images/single-blog/feature-image.png
 title: Analysis of AirBnB listings in Copenhagen
 ---
@@ -31,7 +31,7 @@ Airbnb is a community where guests can book living accommodations from a list of
 
 In the chunk below, we load the data set from [insideairbnb](http://data.insideairbnb.com/denmark/hovedstaden/copenhagen/2020-06-26/data/listings.csv.gz).
 
-```{r load_listings_data, cache=TRUE, warning=FALSE, error=FALSE, message=FALSE}
+```{r load_listings_data, cache=TRUE, warning=FALSE, error=FALSE, include=FALSE}
 
 listings <- vroom("http://data.insideairbnb.com/denmark/hovedstaden/copenhagen/2020-06-26/data/listings.csv.gz") %>% 
     clean_names()
@@ -343,23 +343,6 @@ ggplot(aes(x=review_scores_rating,y=price),data=numeric_listings1)+
 ```
 
 The plot shows that there is little relationship between price and rating - higher price doesn't lead to a higher score.
-
-## Geographic Mapping
-Moving on with our filtered data set, we visualise all Airbnb listings on the map of Copenhagen. The code snippet is taken from the [MAM2021 Applied Statistics website](https://mam2021.netlify.app/assignment/final-project/).
-
-```{r map, cache=TRUE, warning=FALSE, error=FALSE}
-
-leaflet(data = filter(numeric_listings)) %>% 
-  addProviderTiles("OpenStreetMap.Mapnik") %>% 
-  addCircleMarkers(lng = ~longitude, 
-                   lat = ~latitude, 
-                   radius = 1, 
-                   fillColor = "blue", 
-                   fillOpacity = 0.4, 
-                   popup = ~listing_url,
-                   label = ~property_type)
-```
-
 
 # Regression Analysis
 

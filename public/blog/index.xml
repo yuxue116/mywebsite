@@ -6,25 +6,14 @@
     <description>Recent content in Recents Article on Portio</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Sep 2020 13:06:26 +0600</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 17 Sep 2020 08:38:26 +0600</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Analysis of AirBnB listings in Copenhagen</title>
       <link>/blog/airbnb-copenhagen/</link>
-      <pubDate>Thu, 17 Sep 2020 13:06:26 +0600</pubDate>
+      <pubDate>Thu, 17 Sep 2020 08:38:26 +0600</pubDate>
       
       <guid>/blog/airbnb-copenhagen/</guid>
       <description>Executive SummaryAirbnb is a community where guests can book living accommodations from a list of hosts. However, when an individual user books for a stay, it is hard to predict the quality and the price of a rental since there are no formal controls presented in the Airbnb. The aim of this work is to analyse data about Airbnb listings in Copenhagen and fit a model to predict the total cost for two people staying 4 nights in an Airbnb.</description>
-    </item>
-    
-    <item>
-      <title>Climate change and temperature anomalies</title>
-      <link>/blog/climte-change/</link>
-      <pubDate>Tue, 15 Sep 2020 13:06:26 +0600</pubDate>
-      
-      <guid>/blog/climte-change/</guid>
-      <description>First we download the data from data.giss.nasa.gov website.
-weather &amp;lt;- read_csv(&amp;quot;https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.csv&amp;quot;, skip = 1, na = &amp;quot;***&amp;quot;)tidyweather &amp;lt;- weather %&amp;gt;% select(Year,Jan,Feb,Mar,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec) %&amp;gt;% gather(&amp;quot;month&amp;quot;,&amp;quot;delta&amp;quot;,2:12)Plotting InformationLet us plot the data using a time-series scatter plot, and add a trendline.
-tidyweather &amp;lt;- tidyweather %&amp;gt;%mutate(date = ymd(paste(as.character(Year), month, &amp;quot;1&amp;quot;)),month = month(date, label=TRUE),year = year(date))ggplot(tidyweather, aes(x=date, y = delta))+geom_point()+geom_smooth(color=&amp;quot;red&amp;quot;) +theme_bw() +labs (title = &amp;quot;Weather Anomalies&amp;quot;)Is the effect of increasing temperature more pronounced in some months?</description>
     </item>
     
     <item>
@@ -36,6 +25,17 @@ tidyweather &amp;lt;- tidyweather %&amp;gt;%mutate(date = ymd(paste(as.characte
       <description>fivethirtyeight.com has detailed data on all polls that track the president’s approval
 Trump’s Average Net Approval RateWe calculated the average net approval rate for each week that Trump has been in office.
 #Keeping only voters as the subgroup approval_polllist_dates &amp;lt;-approval_polllist_dates %&amp;gt;% filter(subgroup == &amp;quot;Voters&amp;quot;)#Adding net rate to the data set &amp;quot;approval_polllist_dates&amp;quot;approval_polllist_dates &amp;lt;- approval_polllist_dates %&amp;gt;% mutate(net_rate = (approve-disapprove)/(approve+disapprove)*100) %&amp;gt;%filter(!is.na(net_rate))#Calculating average net rate on a weekly basisWeekly_rating &amp;lt;- approval_polllist_dates %&amp;gt;% group_by(year,week_count) %&amp;gt;% summarise(average_weekly_netrate = mean(net_rate),SD = sd(net_rate), SE = SD/sqrt(length(net_rate)), DF = length(net_rate)-1) %&amp;gt;%filter(!</description>
+    </item>
+    
+    <item>
+      <title>Climate change and temperature anomalies</title>
+      <link>/blog/climte-change/</link>
+      <pubDate>Thu, 10 Sep 2020 13:06:26 +0600</pubDate>
+      
+      <guid>/blog/climte-change/</guid>
+      <description>First we download the data from data.giss.nasa.gov website.
+weather &amp;lt;- read_csv(&amp;quot;https://data.giss.nasa.gov/gistemp/tabledata_v3/NH.Ts+dSST.csv&amp;quot;, skip = 1, na = &amp;quot;***&amp;quot;)tidyweather &amp;lt;- weather %&amp;gt;% select(Year,Jan,Feb,Mar,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec) %&amp;gt;% gather(&amp;quot;month&amp;quot;,&amp;quot;delta&amp;quot;,2:12)Plotting InformationLet us plot the data using a time-series scatter plot, and add a trendline.
+tidyweather &amp;lt;- tidyweather %&amp;gt;%mutate(date = ymd(paste(as.character(Year), month, &amp;quot;1&amp;quot;)),month = month(date, label=TRUE),year = year(date))ggplot(tidyweather, aes(x=date, y = delta))+geom_point()+geom_smooth(color=&amp;quot;red&amp;quot;) +theme_bw() +labs (title = &amp;quot;Weather Anomalies&amp;quot;)Is the effect of increasing temperature more pronounced in some months?</description>
     </item>
     
   </channel>
