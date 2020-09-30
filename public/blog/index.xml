@@ -6,7 +6,18 @@
     <description>Recent content in Recents Article on Portio</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Sep 2020 08:38:26 +0600</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 30 Sep 2020 13:06:26 +0600</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Analysis of heart failure clinical records</title>
+      <link>/blog/datagrasp_yuxue/</link>
+      <pubDate>Wed, 30 Sep 2020 13:06:26 +0600</pubDate>
+      
+      <guid>/blog/datagrasp_yuxue/</guid>
+      <description>Executive SummaryThis report aims to analyze heart failure clinical data set and figure out the important variables for the death event.
+To summarize,DEATH_EVENT is highly correlated with age and time. Individuals labelled with DEATH_EVENTare more likely to have lower ejection_fraction. Moreover, having anaemia or high_blood_pressure have also positive relationship with DEATH_EVENT.
+Four models are chosen in the modeling part. The best model is Random Forest, which predicted the test data with accuracy rate of 0.</description>
+    </item>
+    
     <item>
       <title>Analysis of AirBnB listings in Copenhagen</title>
       <link>/blog/airbnb-copenhagen/</link>

@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8" />
+  <title>Analysis of heart failure clinical records</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+  <!-- Slick Carousel --> 
+  <link rel="stylesheet" href="/plugins/slick/slick.css" />
+  <link rel="stylesheet" href="/plugins/slick/slick-theme.css" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.min.css" />
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/plugins/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/plugins/magnafic-popup/magnific-popup.css" />
+
+  <!-- Stylesheets -->
+  
+  <link href="/scss/style.min.css" rel="stylesheet" />
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
+  
+</head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+      <a href="/" class="navbar-brand">
+          <img src="/images/site-navigation/logo1.png" alt="site-logo">
+      </a>
+      <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+          <ul class="nav navbar-nav main-navigation">
+              
+              
+                <li class="nav-item">
+                  <a href="/#home" class="nav-link ">Home</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a href="/#resume" class="nav-link ">Experience</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a href="/#blog" class="nav-link ">Projects</a>
+                </li>
+              
+                <li class="nav-item">
+                  <a href="/#contact" class="nav-link ">Contact</a>
+                </li>
+              
+          </ul>
+          <div class="navbar-nav">
+              <a href="/contact" class="hire_button">Hire Me Now</a>
+          </div>
+      </div>
+  </div>
+</nav>
+    <div id="content">
+      
+
+<header class="breadCrumb">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-md-12 offset-lg-1 offset-md-0 text-center">
+        <h3 class="breadCrumb__title">Analysis of heart failure clinical records</h3>
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center">
+          <ol class="breadcrumb align-items-center">
+            <li class="breadcrumb-item"><a href=/>Home</a></li>
+            <li class="breadcrumb-item"><a href=/blog>All Post</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Analysis of heart failure clinical records</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section singleBlog">
+  <div class="svg-img">
+      <img src=/images/hero/figure-svg.svg alt="">
+  </div>
+  <div class="animate-shape">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 600 600">
+          <defs>
+              <linearGradient id="d" x1="0.929" y1="0.111" x2="0.263" y2="0.935" gradientUnits="objectBoundingBox">
+                  <stop offset="0" stop-color="#f1f6f9" />
+                  <stop offset="1" stop-color="#f1f6f9" stop-opacity="0" />
+              </linearGradient>
+          </defs>
+          <g data-name="blob-shape (3)">
+              <path class="blob" fill="url(#d)"
+                  d="M455.4 151.1c43.1 36.7 73.4 92.8 60.8 136.3-12.7 43.5-68.1 74.4-111.3 119.4-43.1 45-74 104.1-109.8 109-35.9 5-76.7-44.2-111.8-89.2-35.2-45-64.7-85.8-70.8-132.6-6-46.8 11.6-99.6 46.7-136.3 35.2-36.6 88-57.2 142.4-58.8 54.5-1.7 110.6 15.6 153.8 52.2z" />
+          </g>
+      </svg>
+  </div>
+  <div class="animate-pattern">
+      <img src=/images/service/background-pattern.svg alt="background-shape">
+  </div>
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="singleBlog__feature">
+                  <img src=/images/single-blog/feature-image.png alt="feature-image">
+              </div>
+          </div>
+      </div>
+      <div class="row mt-5">
+          <div class="col-lg-12">
+              <div class="singleBlog__content">
+                  
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<div id="executive-summary" class="section level1">
+<h1>Executive Summary</h1>
+<p>This report aims to analyze heart failure clinical data set and figure out the important variables for the death event.</p>
+<p>To summarize,<code>DEATH_EVENT</code> is highly correlated with <code>age</code> and <code>time</code>. Individuals labelled with <code>DEATH_EVENT</code>are more likely to have lower <code>ejection_fraction</code>. Moreover, having <code>anaemia</code> or <code>high_blood_pressure</code> have also positive relationship with <code>DEATH_EVENT</code>.</p>
+<p>Four models are chosen in the modeling part. The best model is Random Forest, which predicted the test data with accuracy rate of 0.8202.</p>
+</div>
+<div id="exploratory-data-analysis-eda" class="section level1">
+<h1>Exploratory Data Analysis (EDA)</h1>
+<p>In the chunk below, we load the data.</p>
+<pre class="r"><code>heartdata &lt;- read_csv(here::here(&quot;data&quot;, &quot;datasets_heart_failure_clinical_records_dataset.csv&quot;))</code></pre>
+<p>We will start with familiarizing ourselves with the variables in the data set to understand what each feature represents.</p>
+<div id="raw-values" class="section level2">
+<h2>Raw Values</h2>
+<p>We will first use the <code>glimpse()</code> function from the <code>dplyr</code> package to gain initial insights into the raw values of the <code>heartdata</code> data set. We see that the data set contains 13 variables and 299 observations. Each observation corresponds to a unique clinical record.</p>
+<pre class="r"><code>glimpse(heartdata)</code></pre>
+<pre><code>## Rows: 299
+## Columns: 13
+## $ age                      &lt;dbl&gt; 75, 55, 65, 50, 65, 90, 75, 60, 65, 80, 75...
+## $ anaemia                  &lt;dbl&gt; 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, ...
+## $ creatinine_phosphokinase &lt;dbl&gt; 582, 7861, 146, 111, 160, 47, 246, 315, 15...
+## $ diabetes                 &lt;dbl&gt; 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, ...
+## $ ejection_fraction        &lt;dbl&gt; 20, 38, 20, 20, 20, 40, 15, 60, 65, 35, 38...
+## $ high_blood_pressure      &lt;dbl&gt; 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, ...
+## $ platelets                &lt;dbl&gt; 265000, 263358, 162000, 210000, 327000, 20...
+## $ serum_creatinine         &lt;dbl&gt; 1.90, 1.10, 1.30, 1.90, 2.70, 2.10, 1.20, ...
+## $ serum_sodium             &lt;dbl&gt; 130, 136, 129, 137, 116, 132, 137, 131, 13...
+## $ sex                      &lt;dbl&gt; 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, ...
+## $ smoking                  &lt;dbl&gt; 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, ...
+## $ time                     &lt;dbl&gt; 4, 6, 7, 7, 8, 8, 10, 10, 10, 10, 10, 10, ...
+## $ DEATH_EVENT              &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...</code></pre>
+<p>We see that we have seven numeric variables: <code>age</code>,<code>creatinine_phosphokinase</code>,<code>ejection_fraction</code>,<code>platelets</code>,<code>serum_creatinine</code>,<code>serum_sodium</code>,<code>time</code>
+and six qualitative variables:<code>anaemia</code>,<code>diabetes</code>,<code>high_blood_pressure</code>,<code>sex</code>,<code>smoking</code>,<code>DEATH_EVENT</code></p>
+<p>Using the <code>skim()</code> function from the <code>skimr</code> package, we next identify the types of the variables.</p>
+<pre class="r"><code>skim(heartdata)</code></pre>
+<table>
+<caption><span id="tab:skim">Table 1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">heartdata</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">299</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">13</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">13</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">age</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">60.83</td>
+<td align="right">11.89</td>
+<td align="right">40.0</td>
+<td align="right">51.0</td>
+<td align="right">60.0</td>
+<td align="right">70.0</td>
+<td align="right">95.0</td>
+<td align="left">▆▇▇▂▁</td>
+</tr>
+<tr class="even">
+<td align="left">anaemia</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.43</td>
+<td align="right">0.50</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">1.0</td>
+<td align="right">1.0</td>
+<td align="left">▇▁▁▁▆</td>
+</tr>
+<tr class="odd">
+<td align="left">creatinine_phosphokinase</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">581.84</td>
+<td align="right">970.29</td>
+<td align="right">23.0</td>
+<td align="right">116.5</td>
+<td align="right">250.0</td>
+<td align="right">582.0</td>
+<td align="right">7861.0</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">diabetes</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.42</td>
+<td align="right">0.49</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">1.0</td>
+<td align="right">1.0</td>
+<td align="left">▇▁▁▁▆</td>
+</tr>
+<tr class="odd">
+<td align="left">ejection_fraction</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">38.08</td>
+<td align="right">11.83</td>
+<td align="right">14.0</td>
+<td align="right">30.0</td>
+<td align="right">38.0</td>
+<td align="right">45.0</td>
+<td align="right">80.0</td>
+<td align="left">▃▇▂▂▁</td>
+</tr>
+<tr class="even">
+<td align="left">high_blood_pressure</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.35</td>
+<td align="right">0.48</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">1.0</td>
+<td align="right">1.0</td>
+<td align="left">▇▁▁▁▅</td>
+</tr>
+<tr class="odd">
+<td align="left">platelets</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">263358.03</td>
+<td align="right">97804.24</td>
+<td align="right">25100.0</td>
+<td align="right">212500.0</td>
+<td align="right">262000.0</td>
+<td align="right">303500.0</td>
+<td align="right">850000.0</td>
+<td align="left">▂▇▂▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">serum_creatinine</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1.39</td>
+<td align="right">1.03</td>
+<td align="right">0.5</td>
+<td align="right">0.9</td>
+<td align="right">1.1</td>
+<td align="right">1.4</td>
+<td align="right">9.4</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">serum_sodium</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">136.63</td>
+<td align="right">4.41</td>
+<td align="right">113.0</td>
+<td align="right">134.0</td>
+<td align="right">137.0</td>
+<td align="right">140.0</td>
+<td align="right">148.0</td>
+<td align="left">▁▁▃▇▁</td>
+</tr>
+<tr class="even">
+<td align="left">sex</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.65</td>
+<td align="right">0.48</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">1.0</td>
+<td align="right">1.0</td>
+<td align="right">1.0</td>
+<td align="left">▅▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">smoking</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.32</td>
+<td align="right">0.47</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">1.0</td>
+<td align="right">1.0</td>
+<td align="left">▇▁▁▁▃</td>
+</tr>
+<tr class="even">
+<td align="left">time</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">130.26</td>
+<td align="right">77.61</td>
+<td align="right">4.0</td>
+<td align="right">73.0</td>
+<td align="right">115.0</td>
+<td align="right">203.0</td>
+<td align="right">285.0</td>
+<td align="left">▆▇▃▆▃</td>
+</tr>
+<tr class="odd">
+<td align="left">DEATH_EVENT</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.32</td>
+<td align="right">0.47</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">1.0</td>
+<td align="right">1.0</td>
+<td align="left">▇▁▁▁▃</td>
+</tr>
+</tbody>
+</table>
+<p>We can see that there is no missing value in this data set.
+There are 96 death events in this data set.</p>
+<p>In the chunk below, we transfer the qualitative variables from dbl to factor variables.</p>
+<pre class="r"><code>cleanheart &lt;- heartdata %&gt;%
+  summarise(DEATH_EVENT = as.factor(DEATH_EVENT),
+            anaemia = as.factor(anaemia),
+            diabetes = as.factor(diabetes),
+            high_blood_pressure = as.factor(high_blood_pressure),
+            sex = as.factor(sex),
+            smoking = as.factor(smoking),
+            age,creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time)</code></pre>
+</div>
+<div id="computing-summary-statistics" class="section level2">
+<h2>Computing Summary Statistics</h2>
+<div id="quantitative-variables" class="section level3">
+<h3>Quantitative variables</h3>
+<p>First we look at quantitative variables and see their relationships with <code>DEATH_EVENT</code>.</p>
+<p>We analyse <code>age</code> data by using favstats function and boxplot.</p>
+<pre class="r"><code>favstats(~age,data = cleanheart)</code></pre>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:age">
+<col><col><col><col><col><col><col><col><col><tr>
+<th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">min</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Q1</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">median</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Q3</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">max</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">mean</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">sd</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">n</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">missing</th></tr>
+<tr>
+<td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">40</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">51</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">60</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">70</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">95</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">60.8</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">11.9</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">299</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">0</td></tr>
+</table>
+
+<pre class="r"><code>favstats(age~DEATH_EVENT,data = cleanheart)</code></pre>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:age">
+<col><col><col><col><col><col><col><col><col><col><tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">DEATH_EVENT</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">min</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Q1</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">median</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">Q3</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">max</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">mean</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">sd</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">n</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">missing</th></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">0</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">40</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">50</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">60</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">65</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">90</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">58.8</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">10.6</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">203</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">0</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">1</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">42</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">55</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">65</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">75</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">95</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">65.2</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">13.2</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">96</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">0</td></tr>
+</table>
+
+<pre class="r"><code>plotage1 &lt;- ggplot(cleanheart,aes(x=DEATH_EVENT, y=age,fill=DEATH_EVENT))+
+  geom_boxplot()+
+  theme_bw()+
+  labs(title = &quot;How age affects death events?&quot;,
+    subtitle = &quot;Boxplot of age as a function of DEATH_EVENT status&quot;)
+plotage1</code></pre>
+<p><img src="/blog/datagrasp_Yuxue_files/figure-html/age-1.png" width="672" /></p>
+<p>We can see from tables that this data set focus on the population with the average age equals to 60.8, and records with “DEATH_EVENT = 1” have higher age median. It is also shown in the box plot.</p>
+<p>We use boxplot to explore the relationship between <code>DEATH_EVENT</code> and other variable.</p>
+<pre class="r"><code>attach(cleanheart)
+par(mfrow=c(2,3))
+boxplot(creatinine_phosphokinase~DEATH_EVENT, main=&quot;Boxplot of creatinine_phosphokinase&quot;,ylim=c(0,3000))
+boxplot(ejection_fraction~DEATH_EVENT, main=&quot;Boxplot of ejection_fraction&quot;)
+boxplot(platelets~DEATH_EVENT, main=&quot;Boxplot of platelets&quot;, log=&quot;y&quot;)
+boxplot(serum_creatinine~DEATH_EVENT, main=&quot;Boxplot of serum_creatinine&quot;,ylim=c(0,5))
+boxplot(serum_sodium~DEATH_EVENT, main=&quot;Boxplot of serum_sodium&quot;)
+boxplot(time~DEATH_EVENT, main=&quot;Boxplot of time&quot;)</code></pre>
+<p><img src="/blog/datagrasp_Yuxue_files/figure-html/combine%20graphs-1.png" width="672" /></p>
+<p>We can see that for all 7 numeric variables, <code>age</code>,<code>time</code>,<code>ejection_fracion</code> are significant variables for <code>DEATH_EVENT</code>; <code>creatinine_phosphokinase</code>and <code>platelets</code> don’t affect too much on <code>DEATH_EVENT</code>.</p>
+<p>Then we calculate the correlation between each pair of numeric variables. These pair-wise correlations can be plotted in a correlation matrix plot to given an idea of which variables change together.</p>
+<pre class="r"><code>correlations &lt;- cor(cleanheart[,7:13])
+corrplot(correlations, method=&quot;circle&quot;)</code></pre>
+<p><img src="/blog/datagrasp_Yuxue_files/figure-html/correlation%20plot-1.png" width="480" /></p>
+<pre class="r"><code>correlations</code></pre>
+<pre><code>##                                  age creatinine_phosphokinase ejection_fraction
+## age                       1.00000000             -0.081583900        0.06009836
+## creatinine_phosphokinase -0.08158390              1.000000000       -0.04407955
+## ejection_fraction         0.06009836             -0.044079554        1.00000000
+## platelets                -0.05235437              0.024463389        0.07217747
+## serum_creatinine          0.15918713             -0.016408480       -0.01130247
+## serum_sodium             -0.04596584              0.059550156        0.17590228
+## time                     -0.22406842             -0.009345653        0.04172924
+##                            platelets serum_creatinine serum_sodium         time
+## age                      -0.05235437       0.15918713  -0.04596584 -0.224068420
+## creatinine_phosphokinase  0.02446339      -0.01640848   0.05955016 -0.009345653
+## ejection_fraction         0.07217747      -0.01130247   0.17590228  0.041729235
+## platelets                 1.00000000      -0.04119808   0.06212462  0.010513909
+## serum_creatinine         -0.04119808       1.00000000  -0.18909521 -0.149315418
+## serum_sodium              0.06212462      -0.18909521   1.00000000  0.087640000
+## time                      0.01051391      -0.14931542   0.08764000  1.000000000</code></pre>
+<p>Seeing from corration graph and table, the correlations between the numeric variables and age are close to zero. In other words, there appears to be little correlation between these clinical variables and age.</p>
+</div>
+</div>
+<div id="qualitative-variables" class="section level2">
+<h2>Qualitative variables</h2>
+<p>Then we explore the relationship between <code>DEATH_EVENT</code> and the rest qualitative variables.</p>
+<pre class="r"><code>ggplot(data = cleanheart, mapping = aes(x = sex, y = ..count.., fill = DEATH_EVENT)) + 
+  geom_bar(stat = &quot;count&quot;, position=&#39;dodge&#39;)+
+  labs(title = &quot;How sex affects death events?&quot;,
+    subtitle = &quot;Barplot of sex as a function of DEATH_EVENT status&quot;)+
+  theme_bw()</code></pre>
+<p><img src="/blog/datagrasp_Yuxue_files/figure-html/sex-1.png" width="672" /></p>
+<p>It shown in the plot that there might be no relationship betweem sex and death event. For both sex, there is around one third death events.</p>
+<p>We use barplots to explore the relationship between <code>DEATH_EVENT</code> and other variable.</p>
+<pre class="r"><code>plot1 &lt;- ggplot(data = cleanheart, mapping = aes(x = anaemia, y = ..count.., fill = DEATH_EVENT)) + 
+  geom_bar(stat = &quot;count&quot;, position=&#39;dodge&#39;)+
+  labs(title = &quot;Barplot of anaemia&quot;)+
+  theme_bw()
+
+plot2 &lt;- ggplot(data = cleanheart, mapping = aes(x = diabetes, y = ..count.., fill = DEATH_EVENT)) + 
+  geom_bar(stat = &quot;count&quot;, position=&#39;dodge&#39;)+
+  labs(title = &quot;Barplot of diabetes&quot;)+
+  theme_bw()
+
+plot3 &lt;- ggplot(data = cleanheart, mapping = aes(x = high_blood_pressure, y = ..count.., fill = DEATH_EVENT)) + 
+  geom_bar(stat = &quot;count&quot;, position=&#39;dodge&#39;)+
+  labs(title = &quot;Barplot of high_blood_pressure&quot;)+
+  theme_bw()
+
+plot4 &lt;- ggplot(data = cleanheart, mapping = aes(x = smoking, y = ..count.., fill = DEATH_EVENT)) + 
+  geom_bar(stat = &quot;count&quot;, position=&#39;dodge&#39;)+
+  labs(title = &quot;Barplot of smoking&quot;)+
+  theme_bw()
+
+plot1+plot2+plot3+plot4</code></pre>
+<p><img src="/blog/datagrasp_Yuxue_files/figure-html/combine%20graphs%20of%20factors-1.png" width="768" /></p>
+<p>It can see from the plots that having <code>anaemia</code> or <code>high_blood_pressure</code> is more likely to lead to death events. Having <code>diabetes</code> also has a slight relationship with death events. Surprisingly, <code>smoking</code> might not be a significant contributor to death events.</p>
+</div>
+</div>
+<div id="modeling-part" class="section level1">
+<h1>Modeling Part</h1>
+<p>Since the response <code>DEATH_EVENT</code> is a qualitative event, linear regression is not appropriate in this case.</p>
+<div id="spliting-the-data-set" class="section level2">
+<h2>Spliting the data set</h2>
+<pre class="r"><code>set.seed(116)
+data_split &lt;- initial_split(cleanheart, prop = .7)
+training &lt;- training(data_split)
+testing &lt;- testing(data_split)
+
+index = sample(1:nrow(cleanheart), size = .70 * nrow(cleanheart))
+train = cleanheart[index, ]
+test = cleanheart[-index, ]</code></pre>
+</div>
+<div id="logistic-regression" class="section level2">
+<h2>Logistic Regression</h2>
+<p>According to the previous analysis, we are thinking of using some of variables from <code>age</code>,<code>time</code>,<code>ejection_fraction</code>,<code>serum_creatinine</code>,<code>anaemia</code> and <code>high_blood_pressure</code> to bulid the logistic regression model.</p>
+<pre class="r"><code>set.seed(116)
+cv_model1 &lt;- train(
+  DEATH_EVENT ~ age+time, 
+  data = training, 
+  method = &quot;glm&quot;,
+  family = binomial(link=&quot;logit&quot;),
+  trControl = trainControl(method = &quot;cv&quot;, number = 10)
+)
+
+set.seed(116)
+cv_model2 &lt;- train(
+  DEATH_EVENT ~ age+time+anaemia, 
+  data = training, 
+  method = &quot;glm&quot;,
+  family = binomial(link=&quot;logit&quot;),
+  trControl = trainControl(method = &quot;cv&quot;, number = 10)
+)
+
+set.seed(116)
+cv_model3 &lt;- train(
+  DEATH_EVENT ~ age+time+ejection_fraction, 
+  data = training, 
+  method = &quot;glm&quot;,
+  family = binomial(link=&quot;logit&quot;),
+  trControl = trainControl(method = &quot;cv&quot;, number = 10)
+)
+
+set.seed(116)
+cv_model4 &lt;- train(
+  DEATH_EVENT ~ age+time+ejection_fraction+serum_creatinine, 
+  data = training, 
+  method = &quot;glm&quot;,
+  family = binomial(link=&quot;logit&quot;),
+  trControl = trainControl(method = &quot;cv&quot;, number = 10)
+)
+
+
+summary(resamples(
+  list(model1=cv_model1,
+       model2=cv_model2,
+       model3=cv_model3,
+       model4=cv_model4)))$statistics$Accuracy</code></pre>
+<pre><code>##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## model1 0.6190476 0.7619048 0.7809524 0.7910390 0.8571429 0.9523810    0
+## model2 0.6190476 0.7359307 0.7809524 0.7860606 0.8571429 0.9047619    0
+## model3 0.7142857 0.7795455 0.8095238 0.8334632 0.9285714 0.9523810    0
+## model4 0.6666667 0.7357143 0.8333333 0.8243723 0.9047619 1.0000000    0</code></pre>
+<p>From logistic regression and cv method, we get our best model - model 3.
+Now we use caret::confusionMatrix() to compute a confusion matrix. We need to supply our model’s predicted class and the actuals from our training data. The confusion matrix provides a wealth of information.</p>
+<pre class="r"><code>glmPredict = predict(cv_model3,newdata = testing)
+#Get the confusion matrix to see accuracy value and other parameter values
+confusionMatrix(glmPredict, testing$DEATH_EVENT)</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  0  1
+##          0 60  7
+##          1 12 10
+##                                           
+##                Accuracy : 0.7865          
+##                  95% CI : (0.6869, 0.8663)
+##     No Information Rate : 0.809           
+##     P-Value [Acc &gt; NIR] : 0.7546          
+##                                           
+##                   Kappa : 0.379           
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.3588          
+##                                           
+##             Sensitivity : 0.8333          
+##             Specificity : 0.5882          
+##          Pos Pred Value : 0.8955          
+##          Neg Pred Value : 0.4545          
+##              Prevalence : 0.8090          
+##          Detection Rate : 0.6742          
+##    Detection Prevalence : 0.7528          
+##       Balanced Accuracy : 0.7108          
+##                                           
+##        &#39;Positive&#39; Class : 0               
+## </code></pre>
+<blockquote>
+<p>Logistic regression predicted test data with accuracy rate of 0.7865.</p>
+</blockquote>
+</div>
+<div id="knn" class="section level2">
+<h2>KNN</h2>
+<p>Because the KNN classifier predicts the class of a given test observation by identifying the observations that are nearest to it, the scale of the variables matters. Here the best model is when k=7.</p>
+<pre class="r"><code>set.seed(116)
+knnmodel &lt;- train(
+  DEATH_EVENT ~ ., 
+  data = training, 
+  method = &quot;knn&quot;,
+  trControl = trainControl(method=&quot;cv&quot;,number = 10),
+  preProcess = c(&quot;center&quot;,&quot;scale&quot;), #to standarlize the data
+  tuneLength = 5
+)
+
+knnmodel</code></pre>
+<pre><code>## k-Nearest Neighbors 
+## 
+## 210 samples
+##  12 predictor
+##   2 classes: &#39;0&#39;, &#39;1&#39; 
+## 
+## Pre-processing: centered (12), scaled (12) 
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 189, 190, 189, 189, 189, 189, ... 
+## Resampling results across tuning parameters:
+## 
+##   k   Accuracy   Kappa    
+##    5  0.7291342  0.3556472
+##    7  0.7624675  0.4402590
+##    9  0.7388961  0.3751187
+##   11  0.7579654  0.4275059
+##   13  0.7384416  0.3839007
+## 
+## Accuracy was used to select the optimal model using the largest value.
+## The final value used for the model was k = 7.</code></pre>
+<pre class="r"><code>knnPredict &lt;- predict(knnmodel,newdata = testing )
+#Get the confusion matrix to see accuracy value and other parameter values
+confusionMatrix(knnPredict, testing$DEATH_EVENT )</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  0  1
+##          0 60  9
+##          1 12  8
+##                                           
+##                Accuracy : 0.764           
+##                  95% CI : (0.6622, 0.8476)
+##     No Information Rate : 0.809           
+##     P-Value [Acc &gt; NIR] : 0.8855          
+##                                           
+##                   Kappa : 0.2847          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.6625          
+##                                           
+##             Sensitivity : 0.8333          
+##             Specificity : 0.4706          
+##          Pos Pred Value : 0.8696          
+##          Neg Pred Value : 0.4000          
+##              Prevalence : 0.8090          
+##          Detection Rate : 0.6742          
+##    Detection Prevalence : 0.7753          
+##       Balanced Accuracy : 0.6520          
+##                                           
+##        &#39;Positive&#39; Class : 0               
+## </code></pre>
+<blockquote>
+<p>KNN model predicted test data with accuracy rate of 0.764.</p>
+</blockquote>
+</div>
+<div id="random-forest" class="section level2">
+<h2>Random Forest</h2>
+<pre class="r"><code># Random forrest
+ctrl &lt;- trainControl(method=&quot;cv&quot;,number = 5)
+rfmodel &lt;- train(
+  DEATH_EVENT ~ ., 
+  data = training, 
+  method = &quot;rf&quot;, 
+  preProc = c(&quot;center&quot;,&quot;scale&quot;),
+  trControl = ctrl
+) #to standarlize the data)
+rfmodel</code></pre>
+<pre><code>## Random Forest 
+## 
+## 210 samples
+##  12 predictor
+##   2 classes: &#39;0&#39;, &#39;1&#39; 
+## 
+## Pre-processing: centered (12), scaled (12) 
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 168, 167, 168, 168, 169 
+## Resampling results across tuning parameters:
+## 
+##   mtry  Accuracy   Kappa    
+##    2    0.8190044  0.6024692
+##    7    0.8237717  0.6189688
+##   12    0.8239986  0.6223075
+## 
+## Accuracy was used to select the optimal model using the largest value.
+## The final value used for the model was mtry = 12.</code></pre>
+<pre class="r"><code>rfpredict &lt;- predict(rfmodel,newdata = testing )
+#Get the confusion matrix to see accuracy value and other parameter values
+confusionMatrix(rfpredict, testing$DEATH_EVENT )</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  0  1
+##          0 58  5
+##          1 14 12
+##                                           
+##                Accuracy : 0.7865          
+##                  95% CI : (0.6869, 0.8663)
+##     No Information Rate : 0.809           
+##     P-Value [Acc &gt; NIR] : 0.75465         
+##                                           
+##                   Kappa : 0.4254          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.06646         
+##                                           
+##             Sensitivity : 0.8056          
+##             Specificity : 0.7059          
+##          Pos Pred Value : 0.9206          
+##          Neg Pred Value : 0.4615          
+##              Prevalence : 0.8090          
+##          Detection Rate : 0.6517          
+##    Detection Prevalence : 0.7079          
+##       Balanced Accuracy : 0.7557          
+##                                           
+##        &#39;Positive&#39; Class : 0               
+## </code></pre>
+<blockquote>
+<p>Random Forest predicted test data with accuracy rate of 0.8202.</p>
+</blockquote>
+</div>
+<div id="support-vector-machines" class="section level2">
+<h2>Support vector machines</h2>
+<p>Here we build a non-linear SVM classifier. We use caret package to compute the radial SVM and the polynomial SVM models.</p>
+<pre class="r"><code>model5 &lt;- train(
+  DEATH_EVENT~.,
+  data = training,
+  method = &quot;svmRadial&quot;,
+  trControl = trainControl(&quot;cv&quot;, number = 5),
+  preProcess = c(&quot;center&quot;,&quot;scale&quot;),
+  tuneLength = 5
+  )
+model6 &lt;- train(
+  DEATH_EVENT~.,
+  data = training,
+  method = &quot;svmPoly&quot;,
+  trControl = trainControl(&quot;cv&quot;, number = 5),
+  preProcess = c(&quot;center&quot;,&quot;scale&quot;),
+  tuneLength = 5
+  )
+# Print the best tuning parameter sigma and C that
+# maximizes model accur
+model5</code></pre>
+<pre><code>## Support Vector Machines with Radial Basis Function Kernel 
+## 
+## 210 samples
+##  12 predictor
+##   2 classes: &#39;0&#39;, &#39;1&#39; 
+## 
+## Pre-processing: centered (12), scaled (12) 
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 168, 169, 168, 167, 168 
+## Resampling results across tuning parameters:
+## 
+##   C     Accuracy   Kappa    
+##   0.25  0.7762526  0.4809287
+##   0.50  0.8095913  0.5807324
+##   1.00  0.8143532  0.5937960
+##   2.00  0.8095913  0.5825287
+##   4.00  0.7854388  0.5285481
+## 
+## Tuning parameter &#39;sigma&#39; was held constant at a value of 0.05039561
+## Accuracy was used to select the optimal model using the largest value.
+## The final values used for the model were sigma = 0.05039561 and C = 1.</code></pre>
+<pre class="r"><code>model6</code></pre>
+<pre><code>## Support Vector Machines with Polynomial Kernel 
+## 
+## 210 samples
+##  12 predictor
+##   2 classes: &#39;0&#39;, &#39;1&#39; 
+## 
+## Pre-processing: centered (12), scaled (12) 
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 169, 168, 167, 168, 168 
+## Resampling results across tuning parameters:
+## 
+##   degree  scale  C     Accuracy   Kappa     
+##   1       1e-03  0.25  0.6238392  0.00000000
+##   1       1e-03  0.50  0.6238392  0.00000000
+##   1       1e-03  1.00  0.6238392  0.00000000
+##   1       1e-03  2.00  0.6238392  0.00000000
+##   1       1e-03  4.00  0.6476542  0.08263469
+##   1       1e-02  0.25  0.6286011  0.01524927
+##   1       1e-02  0.50  0.6620560  0.12737961
+##   1       1e-02  1.00  0.7815952  0.49263245
+##   1       1e-02  2.00  0.8291089  0.62859919
+##   1       1e-02  4.00  0.8288766  0.62791442
+##   1       1e-01  0.25  0.8337547  0.64126900
+##   1       1e-01  0.50  0.8289928  0.62994275
+##   1       1e-01  1.00  0.8143586  0.60549478
+##   1       1e-01  2.00  0.8001837  0.57011614
+##   1       1e-01  4.00  0.8002944  0.56996468
+##   1       1e+00  0.25  0.8095967  0.58813523
+##   1       1e+00  0.50  0.8048348  0.57640374
+##   1       1e+00  1.00  0.7907760  0.54162854
+##   1       1e+00  2.00  0.7908867  0.54708388
+##   1       1e+00  4.00  0.7908867  0.54708388
+##   1       1e+01  0.25  0.7908867  0.54708388
+##   1       1e+01  0.50  0.7908867  0.54708388
+##   1       1e+01  1.00  0.7861248  0.53528761
+##   1       1e+01  2.00  0.7861248  0.53528761
+##   1       1e+01  4.00  0.7861248  0.53528761
+##   2       1e-03  0.25  0.6238392  0.00000000
+##   2       1e-03  0.50  0.6238392  0.00000000
+##   2       1e-03  1.00  0.6238392  0.00000000
+##   2       1e-03  2.00  0.6476542  0.08263469
+##   2       1e-03  4.00  0.7239824  0.33184856
+##   2       1e-02  0.25  0.6667072  0.14235150
+##   2       1e-02  0.50  0.7815952  0.49263245
+##   2       1e-02  1.00  0.8291089  0.63058858
+##   2       1e-02  2.00  0.8337547  0.63917914
+##   2       1e-02  4.00  0.8193528  0.61074506
+##   2       1e-01  0.25  0.8195851  0.60759074
+##   2       1e-01  0.50  0.8051833  0.58193847
+##   2       1e-01  1.00  0.7910083  0.55030632
+##   2       1e-01  2.00  0.7907760  0.54698114
+##   2       1e-01  4.00  0.7669719  0.50383384
+##   2       1e+00  0.25  0.7529022  0.48090136
+##   2       1e+00  0.50  0.7482457  0.46587720
+##   2       1e+00  1.00  0.7575480  0.48657515
+##   2       1e+00  2.00  0.7575480  0.48951120
+##   2       1e+00  4.00  0.7575480  0.48951120
+##   2       1e+01  0.25  0.6865570  0.35090435
+##   2       1e+01  0.50  0.6865570  0.35090435
+##   2       1e+01  1.00  0.6865570  0.35090435
+##   2       1e+01  2.00  0.6865570  0.35090435
+##   2       1e+01  4.00  0.6865570  0.35090435
+##   3       1e-03  0.25  0.6238392  0.00000000
+##   3       1e-03  0.50  0.6238392  0.00000000
+##   3       1e-03  1.00  0.6286011  0.01524927
+##   3       1e-03  2.00  0.6855333  0.20404526
+##   3       1e-03  4.00  0.8099506  0.56901337
+##   3       1e-02  0.25  0.7191043  0.31375382
+##   3       1e-02  0.50  0.8099506  0.57843546
+##   3       1e-02  1.00  0.8337547  0.63948514
+##   3       1e-02  2.00  0.8194690  0.60902118
+##   3       1e-02  4.00  0.8052940  0.57777843
+##   3       1e-01  0.25  0.8006536  0.56014727
+##   3       1e-01  0.50  0.7861302  0.53412864
+##   3       1e-01  1.00  0.7574427  0.46938972
+##   3       1e-01  2.00  0.7812522  0.52752400
+##   3       1e-01  4.00  0.8002998  0.56899682
+##   3       1e+00  0.25  0.7860141  0.53498427
+##   3       1e+00  0.50  0.7860141  0.53498427
+##   3       1e+00  1.00  0.7860141  0.53498427
+##   3       1e+00  2.00  0.7860141  0.53498427
+##   3       1e+00  4.00  0.7860141  0.53498427
+##   3       1e+01  0.25  0.7669611  0.49130829
+##   3       1e+01  0.50  0.7669611  0.49130829
+##   3       1e+01  1.00  0.7669611  0.49130829
+##   3       1e+01  2.00  0.7669611  0.49130829
+##   3       1e+01  4.00  0.7669611  0.49130829
+## 
+## Accuracy was used to select the optimal model using the largest value.
+## The final values used for the model were degree = 1, scale = 0.1 and C = 0.25.</code></pre>
+<p>From table above we can find out that poly SVM model has a better accuracy. Thus we look at its confusion matrix.</p>
+<pre class="r"><code>svmpredict &lt;- predict(model6,newdata = testing )
+#Get the confusion matrix to see accuracy value and other parameter values
+confusionMatrix(svmpredict, testing$DEATH_EVENT )</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  0  1
+##          0 60  7
+##          1 12 10
+##                                           
+##                Accuracy : 0.7865          
+##                  95% CI : (0.6869, 0.8663)
+##     No Information Rate : 0.809           
+##     P-Value [Acc &gt; NIR] : 0.7546          
+##                                           
+##                   Kappa : 0.379           
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.3588          
+##                                           
+##             Sensitivity : 0.8333          
+##             Specificity : 0.5882          
+##          Pos Pred Value : 0.8955          
+##          Neg Pred Value : 0.4545          
+##              Prevalence : 0.8090          
+##          Detection Rate : 0.6742          
+##    Detection Prevalence : 0.7528          
+##       Balanced Accuracy : 0.7108          
+##                                           
+##        &#39;Positive&#39; Class : 0               
+## </code></pre>
+<blockquote>
+<p>Random Forest predicted test data with accuracy rate of 0.7865.</p>
+</blockquote>
+</div>
+<div id="summary-of-all-the-model" class="section level2">
+<h2>Summary of all the model</h2>
+<pre class="r"><code>model &lt;- c(&quot;linear regression&quot;,&quot;KNN&quot;,&quot;random forest&quot;,&quot;support vector machine&quot;)
+accuracy &lt;- c(0.7865,0.764,0.8202,0.7865)
+model &lt;- data.frame(model, accuracy)
+model</code></pre>
+<table class="huxtable" style="border-collapse: collapse; border: 0px; margin-bottom: 2em; margin-top: 2em; ; margin-left: auto; margin-right: auto;  " id="tab:model table">
+<col><col><tr>
+<th style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">model</th><th style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: bold;">accuracy</th></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0pt 0pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">linear regression</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0.4pt 0.4pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">0.786</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">KNN</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0.4pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">0.764</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">random forest</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0.4pt 0pt 0pt;    padding: 6pt 6pt 6pt 6pt; background-color: rgb(242, 242, 242); font-weight: normal;">0.82&nbsp;</td></tr>
+<tr>
+<td style="vertical-align: top; text-align: left; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0pt 0.4pt 0.4pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">support vector machine</td><td style="vertical-align: top; text-align: right; white-space: normal; border-style: solid solid solid solid; border-width: 0pt 0.4pt 0.4pt 0pt;    padding: 6pt 6pt 6pt 6pt; font-weight: normal;">0.786</td></tr>
+</table>
+
+<pre class="r"><code>models &lt;- ggplot(model, aes(x=model, y=accuracy,fill=model))+
+  geom_col()+
+  labs(title = &quot;Accuracy of four different models&quot;,
+       xlab = &quot;&quot;)+
+  ylim(c(0,1))+
+  geom_text(aes(label = accuracy), vjust = -0.5)
+models</code></pre>
+<p><img src="/blog/datagrasp_Yuxue_files/figure-html/model%20table-1.png" width="768" />
+To sum up, the best model is Random Forest model, with accuracy rate equals to 0.8202.</p>
+</div>
+</div>
+
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+
+    </div>
+    <section class="contact" id="contact">
+  <div class="contact__background_shape">
+      <svg viewBox="0 0 1920 79">
+          <path d="M0 0h1920v79L0 0z" data-name="Path 1450" />
+      </svg>
+  </div>
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="contact__cta">
+                  <div class="shape-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="357" height="315.029" viewBox="0 0 357 315.029">
+                          <path data-name="Path 1449" d="M76.1-157.222C91.746-135.8 87.2-94.273 99.993-61.945c12.7 32.328 42.661 55.459 39.248 73.282-3.318 17.823-40.007 30.337-65.6 43.325-25.5 12.988-39.912 26.545-60.01 42.566-20.1 16.116-46.074 34.6-63.328 27.682-17.349-6.921-25.976-39.153-59.915-59.82s-93.1-29.768-105.325-51.478 22.373-56.028 43.609-93.949c21.331-37.921 29.2-79.35 53.563-96.793 24.459-17.444 65.414-10.9 103.9-6.921 38.396 3.982 74.326 5.404 89.965 26.829z" transform="translate(217.489 188.626)"/>
+                      </svg>
+                  </div>
+                  <div class="shape-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="357" height="315.029" viewBox="0 0 357 315.029">
+                          <path data-name="Path 1449" d="M76.1-157.222C91.746-135.8 87.2-94.273 99.993-61.945c12.7 32.328 42.661 55.459 39.248 73.282-3.318 17.823-40.007 30.337-65.6 43.325-25.5 12.988-39.912 26.545-60.01 42.566-20.1 16.116-46.074 34.6-63.328 27.682-17.349-6.921-25.976-39.153-59.915-59.82s-93.1-29.768-105.325-51.478 22.373-56.028 43.609-93.949c21.331-37.921 29.2-79.35 53.563-96.793 24.459-17.444 65.414-10.9 103.9-6.921 38.396 3.982 74.326 5.404 89.965 26.829z" transform="translate(217.489 188.626)"/>
+                      </svg>
+                  </div>
+                  <div class="contact__cta_content">
+                      <span>Contact me</span>
+                      <h1>Let’s Start a Project</h1>
+                  </div>
+                  <div class="contact__cta_action">
+                      <a href="/contact">Get in touch</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="row contact__widget">
+          <div class="col-lg-4">
+              <div class="contact__widget_logo">
+                  <img src="/images/site-navigation/logo1.png" alt="widget-logo">
+              </div>
+          </div>
+          <div class="col-lg-4">
+              <div class="contact__widget_sitemap">
+                  <h3>My Linkedin</h3>
+                  <ul>
+                      
+                      
+                        <li><a href="https://www.linkedin.com/in/yuxue-sang-b782a81a3/">Linkedin</a></li>
+                      
+                  </ul>
+              </div>
+          </div>
+          <div class="col-lg-4">
+              <div class="contact__widget_address">
+                  <h3>Address</h3>
+                  
+                  <ul>
+                      <li><a href="tel:&#43;%2844%29%207579951305"><i class="fa fa-phone"></i>&#43;(44) 7579951305</a></li> 
+                      <li><a href="mailto:ysang.mam2021@london.edu"><i class="fa fa-envelope"></i>ysang.mam2021@london.edu</a></li>
+                      <li><p><i class="fa fa-map-marker"></i>London Business School, Regent&#39;s Park, London</p></li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <div class="row contact__footer">
+          <div class="col-lg-6">
+              <div class="contact__footer_copy">
+                  <p>All right reserved copyright © Portio 2020</p>
+              </div>
+          </div>
+       
+      </div>
+  </div>
+</section>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR%20GOOGLE%20MAP%20API&libraries=geometry"></script>
+<script src="/plugins/jQuery/jquery.min.js"></script>
+<script src="/plugins/bootstrap/bootstrap.min.js"></script>
+<script src="/plugins/slick/slick.min.js"></script>
+<script src="/plugins/slick/slick.min.js"></script>
+<script src="/plugins/waypoint/jquery.waypoints.min.js"></script>
+<script src="/plugins/magnafic-popup/jquery.magnific-popup.min.js"></script>
+<script src="/plugins/tweenmax/TweenMax.min.js"></script>
+<script src="/plugins/masonry/masonry.min.js"></script>
+
+<script src="/js/form-handler.min.js"></script>
+
+<script src="/js/script.min.js"></script>
+  </body>
+</html>
