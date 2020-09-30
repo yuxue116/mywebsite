@@ -1,0 +1,355 @@
+---
+title: "Analysis of heart failure clinical records"
+author: "Yuxue Sang"
+date: "2020/9/30"
+output:
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    code_folding: show
+  pdf_document:
+    toc: yes
+---
+```{r load_libraries_data, message=FALSE, warning=FALSE, echo=FALSE}
+library(tidyverse)
+library(broom)
+library(here)
+library(janitor)
+library(huxtable)
+library(skimr)
+library(dplyr)
+library(readr)
+library(mosaic)
+library(FactoMineR)
+library(GGally)
+library(leaflet)
+library(car)
+library(ggfortify)
+library(corrplot)
+library(rsample)
+library(caret)
+library(patchwork) #to combine graphs together
+library(class)
+library(randomForest)
+library(kernlab)
+library(ROCR)
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+# Executive Summary 
+
+This report aims to analyze heart failure clinical data set and figure out the important variables for the death event.
+
+To summarize,`DEATH_EVENT` is highly correlated with `age` and `time`. Individuals labelled with `DEATH_EVENT`are more likely to have lower `ejection_fraction`. Moreover, having `anaemia` or `high_blood_pressure` have also positive relationship with `DEATH_EVENT`.
+
+Four models are chosen in the modeling part. The best model is Random Forest, which predicted the test data with accuracy rate of 0.8202.
+
+# Exploratory Data Analysis (EDA)
+
+In the chunk below, we load the data.
+
+```{r load_listings_data, cache=TRUE, warning=FALSE, error=FALSE, message=FALSE}
+heartdata <- read_csv(here::here("data", "datasets_heart_failure_clinical_records_dataset.csv"))
+```
+
+We will start with familiarizing ourselves with the variables in the data set to understand what each feature represents.
+
+## Raw Values
+
+We will first use the `glimpse()` function from the `dplyr` package to gain initial insights into the raw values of the `heartdata` data set. We see that the data set contains 13 variables and 299 observations. Each observation corresponds to a unique clinical record.
+
+```{r glimpsing, warning=FALSE, error=FALSE}
+glimpse(heartdata)
+```
+
+We see that we have seven numeric variables: `age`,`creatinine_phosphokinase`,`ejection_fraction`,`platelets`,`serum_creatinine`,`serum_sodium`,`time`
+and six qualitative variables:`anaemia`,`diabetes`,`high_blood_pressure`,`sex`,`smoking`,`DEATH_EVENT`
+
+Using the `skim()` function from the `skimr` package, we next identify the types of the variables.
+
+```{r skim,  warning=FALSE, error=FALSE}
+skim(heartdata)
+```
+We can see that there is no missing value in this data set.
+There are 96 death events in this data set.
+
+In the chunk below, we transfer the qualitative variables from dbl to factor variables.
+```{r tranfer to factor, warning=FALSE, error=FALSE}
+cleanheart <- heartdata %>%
+  summarise(DEATH_EVENT = as.factor(DEATH_EVENT),
+            anaemia = as.factor(anaemia),
+            diabetes = as.factor(diabetes),
+            high_blood_pressure = as.factor(high_blood_pressure),
+            sex = as.factor(sex),
+            smoking = as.factor(smoking),
+            age,creatinine_phosphokinase, ejection_fraction, platelets, serum_creatinine, serum_sodium, time)
+```
+
+## Computing Summary Statistics
+
+### Quantitative variables
+
+First we look at quantitative variables and see their relationships with `DEATH_EVENT`.
+
+We analyse `age` data by using favstats function and boxplot.
+
+```{r age, warning=FALSE, error=FALSE,fig.height=5,fig.width=7}
+favstats(~age,data = cleanheart)
+favstats(age~DEATH_EVENT,data = cleanheart)
+plotage1 <- ggplot(cleanheart,aes(x=DEATH_EVENT, y=age,fill=DEATH_EVENT))+
+  geom_boxplot()+
+  theme_bw()+
+  labs(title = "How age affects death events?",
+    subtitle = "Boxplot of age as a function of DEATH_EVENT status")
+plotage1
+
+```
+
+We can see from tables that this data set focus on the population with the average age equals to 60.8, and records with "DEATH_EVENT = 1" have higher age median. It is also shown in the box plot.
+
+We use boxplot to explore the relationship between `DEATH_EVENT` and other variable.
+
+```{r combine graphs, warning=FALSE, error=FALSE,fig.height=5,fig.width=7}
+attach(cleanheart)
+par(mfrow=c(2,3))
+boxplot(creatinine_phosphokinase~DEATH_EVENT, main="Boxplot of creatinine_phosphokinase",ylim=c(0,3000))
+boxplot(ejection_fraction~DEATH_EVENT, main="Boxplot of ejection_fraction")
+boxplot(platelets~DEATH_EVENT, main="Boxplot of platelets", log="y")
+boxplot(serum_creatinine~DEATH_EVENT, main="Boxplot of serum_creatinine",ylim=c(0,5))
+boxplot(serum_sodium~DEATH_EVENT, main="Boxplot of serum_sodium")
+boxplot(time~DEATH_EVENT, main="Boxplot of time")
+```
+
+We can see that for all 7 numeric variables, `age`,`time`,`ejection_fracion` are significant variables for `DEATH_EVENT`; `creatinine_phosphokinase`and `platelets` don't affect too much on `DEATH_EVENT`.
+
+Then we calculate the correlation between each pair of numeric variables. These pair-wise correlations can be plotted in a correlation matrix plot to given an idea of which variables change together.
+
+```{r correlation plot,warning=FALSE, error=FALSE,fig.height=5, fig.width=5}
+correlations <- cor(cleanheart[,7:13])
+corrplot(correlations, method="circle")
+correlations
+```
+
+Seeing from corration graph and table, the correlations between the numeric variables and age are close to zero. In other words, there appears to be little correlation between these clinical variables and age.
+
+## Qualitative variables
+
+Then we explore the relationship between `DEATH_EVENT` and the rest qualitative variables.
+
+```{r sex, warning=FALSE, error=FALSE,fig.height=5,fig.width=7}
+ggplot(data = cleanheart, mapping = aes(x = sex, y = ..count.., fill = DEATH_EVENT)) + 
+  geom_bar(stat = "count", position='dodge')+
+  labs(title = "How sex affects death events?",
+    subtitle = "Barplot of sex as a function of DEATH_EVENT status")+
+  theme_bw()
+
+```
+
+It shown in the plot that there might be no relationship betweem sex and death event. For both sex, there is around one third death events.
+
+We use barplots to explore the relationship between `DEATH_EVENT` and other variable.
+
+```{r combine graphs of factors, warning=FALSE, error=FALSE,fig.height=5,fig.width=8}
+plot1 <- ggplot(data = cleanheart, mapping = aes(x = anaemia, y = ..count.., fill = DEATH_EVENT)) + 
+  geom_bar(stat = "count", position='dodge')+
+  labs(title = "Barplot of anaemia")+
+  theme_bw()
+
+plot2 <- ggplot(data = cleanheart, mapping = aes(x = diabetes, y = ..count.., fill = DEATH_EVENT)) + 
+  geom_bar(stat = "count", position='dodge')+
+  labs(title = "Barplot of diabetes")+
+  theme_bw()
+
+plot3 <- ggplot(data = cleanheart, mapping = aes(x = high_blood_pressure, y = ..count.., fill = DEATH_EVENT)) + 
+  geom_bar(stat = "count", position='dodge')+
+  labs(title = "Barplot of high_blood_pressure")+
+  theme_bw()
+
+plot4 <- ggplot(data = cleanheart, mapping = aes(x = smoking, y = ..count.., fill = DEATH_EVENT)) + 
+  geom_bar(stat = "count", position='dodge')+
+  labs(title = "Barplot of smoking")+
+  theme_bw()
+
+plot1+plot2+plot3+plot4
+
+```
+
+It can see from the plots that having `anaemia` or `high_blood_pressure` is more likely to lead to death events. Having `diabetes` also has a slight relationship with death events. Surprisingly, `smoking` might not be a significant contributor to death events.
+
+# Modeling Part
+
+Since the response `DEATH_EVENT` is a qualitative event, linear regression is not appropriate in this case.
+
+## Spliting the data set
+
+```{r spliting,warning=FALSE, error=FALSE}
+set.seed(116)
+data_split <- initial_split(cleanheart, prop = .7)
+training <- training(data_split)
+testing <- testing(data_split)
+
+index = sample(1:nrow(cleanheart), size = .70 * nrow(cleanheart))
+train = cleanheart[index, ]
+test = cleanheart[-index, ]
+```
+## Logistic Regression
+
+According to the previous analysis, we are thinking of using some of variables from `age`,`time`,`ejection_fraction`,`serum_creatinine`,`anaemia` and `high_blood_pressure` to bulid the logistic regression model.
+
+```{r glm model}
+set.seed(116)
+cv_model1 <- train(
+  DEATH_EVENT ~ age+time, 
+  data = training, 
+  method = "glm",
+  family = binomial(link="logit"),
+  trControl = trainControl(method = "cv", number = 10)
+)
+
+set.seed(116)
+cv_model2 <- train(
+  DEATH_EVENT ~ age+time+anaemia, 
+  data = training, 
+  method = "glm",
+  family = binomial(link="logit"),
+  trControl = trainControl(method = "cv", number = 10)
+)
+
+set.seed(116)
+cv_model3 <- train(
+  DEATH_EVENT ~ age+time+ejection_fraction, 
+  data = training, 
+  method = "glm",
+  family = binomial(link="logit"),
+  trControl = trainControl(method = "cv", number = 10)
+)
+
+set.seed(116)
+cv_model4 <- train(
+  DEATH_EVENT ~ age+time+ejection_fraction+serum_creatinine, 
+  data = training, 
+  method = "glm",
+  family = binomial(link="logit"),
+  trControl = trainControl(method = "cv", number = 10)
+)
+
+
+summary(resamples(
+  list(model1=cv_model1,
+       model2=cv_model2,
+       model3=cv_model3,
+       model4=cv_model4)))$statistics$Accuracy
+```
+
+From logistic regression and cv method, we get our best model - model 3.
+Now we use caret::confusionMatrix() to compute a confusion matrix. We need to supply our model’s predicted class and the actuals from our training data. The confusion matrix provides a wealth of information. 
+
+```{r confusionmatrix, fig.height=5, fig.width=8}
+glmPredict = predict(cv_model3,newdata = testing)
+#Get the confusion matrix to see accuracy value and other parameter values
+confusionMatrix(glmPredict, testing$DEATH_EVENT)
+```
+
+> Logistic regression predicted test data with accuracy rate of 0.7865.
+
+## KNN
+Because the KNN classifier predicts the class of a given test observation by identifying the observations that are nearest to it, the scale of the variables matters. Here the best model is when k=7.
+```{r knn}
+set.seed(116)
+knnmodel <- train(
+  DEATH_EVENT ~ ., 
+  data = training, 
+  method = "knn",
+  trControl = trainControl(method="cv",number = 10),
+  preProcess = c("center","scale"), #to standarlize the data
+  tuneLength = 5
+)
+
+knnmodel
+
+```
+
+```{r}
+knnPredict <- predict(knnmodel,newdata = testing )
+#Get the confusion matrix to see accuracy value and other parameter values
+confusionMatrix(knnPredict, testing$DEATH_EVENT )
+```
+
+> KNN model predicted test data with accuracy rate of 0.764.
+
+## Random Forest
+```{r}
+# Random forrest
+ctrl <- trainControl(method="cv",number = 5)
+rfmodel <- train(
+  DEATH_EVENT ~ ., 
+  data = training, 
+  method = "rf", 
+  preProc = c("center","scale"),
+  trControl = ctrl
+) #to standarlize the data)
+rfmodel
+```
+```{r}
+rfpredict <- predict(rfmodel,newdata = testing )
+#Get the confusion matrix to see accuracy value and other parameter values
+confusionMatrix(rfpredict, testing$DEATH_EVENT )
+```
+> Random Forest predicted test data with accuracy rate of 0.8202.
+
+## Support vector machines
+
+Here we build a non-linear SVM classifier. We use caret package to compute the radial SVM and the polynomial SVM models.
+
+```{r}
+model5 <- train(
+  DEATH_EVENT~.,
+  data = training,
+  method = "svmRadial",
+  trControl = trainControl("cv", number = 5),
+  preProcess = c("center","scale"),
+  tuneLength = 5
+  )
+model6 <- train(
+  DEATH_EVENT~.,
+  data = training,
+  method = "svmPoly",
+  trControl = trainControl("cv", number = 5),
+  preProcess = c("center","scale"),
+  tuneLength = 5
+  )
+# Print the best tuning parameter sigma and C that
+# maximizes model accur
+model5
+model6
+```
+
+From table above we can find out that poly SVM model has a better accuracy. Thus we look at its confusion matrix.
+
+```{r}
+svmpredict <- predict(model6,newdata = testing )
+#Get the confusion matrix to see accuracy value and other parameter values
+confusionMatrix(svmpredict, testing$DEATH_EVENT )
+```
+
+> Random Forest predicted test data with accuracy rate of 0.7865.
+
+## Summary of all the model
+
+```{r model table, fig.height=5, fig.width=8}
+model <- c("linear regression","KNN","random forest","support vector machine")
+accuracy <- c(0.7865,0.764,0.8202,0.7865)
+model <- data.frame(model, accuracy)
+model
+models <- ggplot(model, aes(x=model, y=accuracy,fill=model))+
+  geom_col()+
+  labs(title = "Accuracy of four different models",
+       xlab = "")+
+  ylim(c(0,1))+
+  geom_text(aes(label = accuracy), vjust = -0.5)
+models
+```
+To sum up, the best model is Random Forest model, with accuracy rate equals to 0.8202.
